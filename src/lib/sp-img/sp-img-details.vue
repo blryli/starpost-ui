@@ -43,10 +43,6 @@ export default {
         type:Boolean,
         default : true
       },
-      cutBoxShow: {
-      	type:Boolean,
-      	default : true
-      },
       imgSize: {
       	type: Array,
       	default: function () { 
@@ -56,6 +52,10 @@ export default {
       defaultColor: {
       	type: String,
       	default: '#15A6BB'
+      },
+      cutBoxShow: {
+        type:Boolean,
+        default : true
       },
       imgBoxSize: {
         type: Array,
