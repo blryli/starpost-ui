@@ -25,7 +25,7 @@ var starpostUI = require('Starpost')
 Vue.use(starpostUI)
 
 // 或者直接使用script导入
-<script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js""></script>
+<script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js"></script>
 
 // 作为组件的方式使用
 <sp-img-details></sp-img-details>
