@@ -25,7 +25,7 @@ var starpostUI = require('Starpost')
 Vue.use(starpostUI)
 
 // 或者直接使用script导入
-<script src="./node_modules/vue/dist/starpost-ui.js"></script>
+<script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js""></script>
 
 // 作为组件的方式使用
 <sp-img-details></sp-img-details>
@@ -49,9 +49,9 @@ export default {
   data () {
     return {
       array: [ 
-        {src:'http://pic2.97uimg.com/58pic/19/34/12/01q58PICkKe.jpg!w1200', text: 88888888},
-        {src:'http://pic2.97uimg.com/58pic/19/77/18/38v58PICbIJ.jpg!w1200', text: 2222},
-        {src:'http://170.168.0.51:9001/img/75cffdc9-c596-423c-8ffd-c9c596b23c7c', text: 3333}
+        {src:'http://pic2.97uimg.com/58pic/19/34/12/01q58PICkKe.jpg!w1200', text: 1111111},
+        {src:'http://pic2.97uimg.com/58pic/19/77/18/38v58PICbIJ.jpg!w1200', text: 2222222},
+        {src:'http://170.168.0.51:9001/img/75cffdc9-c596-423c-8ffd-c9c596b23c7c', text: 3333333}
       ],
     }
   }
