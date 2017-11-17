@@ -20,7 +20,7 @@ npm install starpost-ui -S
 //ES6
 import starpostUI from 'starpost-ui.js'
 // require
-var starpostUI = require('LookImages')
+var starpostUI = require('Starpost')
 
 Vue.use(starpostUI)
 
@@ -28,19 +28,19 @@ Vue.use(starpostUI)
 <script src="./node_modules/vue/dist/starpost-ui.js"></script>
 
 // 作为组件的方式使用
-<starpost-ui></starpost-ui>
+<sp-img-details></sp-img-details>
 ```
 
 ### 配置
 
 ```html
-<starpost-ui
+<sp-img-details
 	:url-arr="array"
 	:show-one="true"
 	:align-row="true"
 	:img-size="[30, 30]"
 	:default-color="#15A6BB">
-</starpost-ui>
+</sp-img-details>
 ```
 
 ```js
@@ -73,7 +73,6 @@ export default {
 
 ```
 
-
 // 作为组件的方式使用
 <sp-checkbox></sp-checkbox>
 ```
@@ -83,14 +82,14 @@ export default {
 ```html
 <sp-checkbox
 	:checkboxAll="true"
-	:checkedArr="taskData"
+	:checkedArr="checkArr"
 	v-model="checkAlled"
 	@change="getCheckArr">全选&nbsp;&nbsp;
 </sp-checkbox>
-<div v-for="(item, index) in taskData">
+<div v-for="(item, index) in checkArr">
     <sp-checkbox
 	  	v-model="item.checked"
-	  	:checkedArr="taskData"
+	  	:checkedArr="checkArr"
 	  	:checkAlled="checkAlled"
 	  	@change="getCheckAlled">选项{{index}}
     </sp-checkbox>
@@ -103,7 +102,7 @@ export default {
   data () {
     return {
       checkAlled: false,
-      taskData: [
+      checkArr: [
         { checked: false },
         { checked: false },
         { checked: false },
@@ -114,7 +113,7 @@ export default {
   },
   methods: {
     getCheckArr(val){
-        this.taskData = val
+        this.checkArr = val
     },
     getCheckAlled(val) {
         this.checkAlled = val
