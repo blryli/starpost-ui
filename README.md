@@ -49,9 +49,9 @@ export default {
   data () {
     return {
       array: [ 
-        {src:'http://pic2.97uimg.com/58pic/19/34/12/01q58PICkKe.jpg!w1200', text: 1111111},
-        {src:'http://pic2.97uimg.com/58pic/19/77/18/38v58PICbIJ.jpg!w1200', text: 2222222},
-        {src:'http://170.168.0.51:9001/img/75cffdc9-c596-423c-8ffd-c9c596b23c7c', text: 3333333}
+        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', text: 11111111111},
+        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', text: 22222222222},
+        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', text: 33333333333}
       ],
     }
   }
@@ -63,13 +63,16 @@ export default {
 
 |    name    |    Description   |   type   |default|
 | -----------------  | ---------------- | :--------: | :----------: |
-| url-arr       | 图片地址 |Array| []
-| show-one        | 只展示第一张图片 |Boolean | false
-| align-row        | 横排展示 |Boolean | true
-| img-size        | 展示图片大小 |Array | [30, 30]
-| default-color        | 激活图片边框颜色 |String | #15A6BB
-| cut-box-show        | 左右切换箭头 |Boolean | true
-| img-box-size        | 弹窗大小 |Array | [600, 500]
+| urlArr       | 图片地址 |Array| []
+| showOne        | 只展示第一张图片 |Boolean | false
+| alignRow        | 横排展示 |Boolean | true
+| imgSize        | 展示图片大小 |Array | [30, 30]
+| imgBoxSize        | 弹窗大小 |Array | [600, 500]
+| defaultColor        | 激活图片边框颜色 |String | #15A6BB
+| cutBoxShow        | 是否开启左右切换箭头 |Boolean | true
+| smallImgShow        | 弹窗内是否展示缩略图 |Boolean | true
+| scrollbar        | 是否允许浏览器出现滚动条 |Boolean | true
+| shadeClose        | 是否点击遮罩关闭 |Boolean | false
 
 ```
 

@@ -54,7 +54,7 @@ module.exports = {
     //contentBase: __dirname + "/build",//本地服务器所加载的页面所在的目录
     // historyApiFallback: true,//不跳转
     inline: true,//当源文件改变时会自动刷新页面
-    port:8282//端口
+    port:8666//端口
   },
   performance: {
     hints: false
