@@ -71,7 +71,6 @@ export default {
 | scrollbar        | 是否允许浏览器出现滚动条 |Boolean | true
 | shadeClose        | 是否点击遮罩关闭 |Boolean | false
 
-```
 
 ### [全选/复选框]组件配置
 
@@ -128,7 +127,6 @@ export default {
 | checkAlled        | 全选 |Boolean | false
 | checkSize        | checked大小 |Array | [14, 14]
 
-```
 
 ### [单选/复选按钮]组件配置
 
