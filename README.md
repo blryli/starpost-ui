@@ -28,6 +28,8 @@ Vue.use(starpostUI)
 <script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js"></script>
 ```
 
+
+
 ### [相册]组件配置
 
 ```html
@@ -70,6 +72,8 @@ export default {
 | smallImgShow        | 弹窗内是否展示缩略图 |Boolean | true
 | scrollbar        | 是否允许浏览器出现滚动条 |Boolean | true
 | shadeClose        | 是否点击遮罩关闭 |Boolean | false
+
+
 
 
 ### [全选/复选框]组件配置
@@ -128,6 +132,8 @@ export default {
 | checkSize        | checked大小 |Array | [14, 14]
 
 
+
+
 ### [单选/复选按钮]组件配置
 
 ```html
@@ -175,5 +181,3 @@ export default {
 | checkValues        | 默认选中项 |Array | []
 | checkMany        | 是否为多选按钮 |Boolean | false
 | checkboxSize        | checked大小 |String | 'lg'
-
-```
