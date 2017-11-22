@@ -137,11 +137,11 @@ export default {
 ### [单选/复选按钮]组件配置
 
 ```html
-<sp-checkbox
+<sp-checkbox-button
   :checkList="checkList"
   :checkValues="checkValues"
   @callback="getSaskStatus">
-</sp-checkbox>
+</sp-checkbox-button>
 ```
 
 ```js
