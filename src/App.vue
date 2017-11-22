@@ -5,9 +5,11 @@
     <sp-img-details :urlArr="imgs"></sp-img-details>
     <h3>全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
-    <p v-for="(item, index) in checkArr">
+    <sp-checkbox-group v-for="(item, index) in checkArr">
       <sp-checkbox v-model.lazy="item.checked" :checkedArr="checkArr" :checkAlled="checkAlled" @change="getCheckAlled">选项{{index}}</sp-checkbox>
-    </p>
+    </sp-checkbox-group>
+    <h3>单选/复选按钮</h3>
+    <sp-checkbox-button :checkList="checkList" :checkValues="checkValues" @callback="getSaskStatus">状态</sp-checkbox-button>
   </div>
 </template>
 
@@ -29,6 +31,19 @@ export default {
         { checked: false },
         { checked: false },
         { checked: false }
+      ],
+      checkValues: ['01'],
+      checkList: [
+        {
+          id: '01',
+          name: '已付款',
+        },{
+          id: '02',
+          name: '已发货',
+        },{
+          id: '03',
+          name: '已签收',
+        },
       ]
     }
   },
@@ -44,7 +59,10 @@ export default {
     },
     getCheckAlled(val) {
         this.checkAlled = val
-    }
+    },
+    getSaskStatus(val) {
+      this.checkValues = val;
+    },
   }
 }
 </script>
@@ -52,5 +70,6 @@ export default {
 <style lang="scss">
 #app{
   text-align: center;
+  font-size: 14px;
 }
 </style>

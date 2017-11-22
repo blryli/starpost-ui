@@ -27,7 +27,7 @@ Vue.use(starpostUI)
 // 或者直接使用script导入
 <script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js"></script>
 
-// 作为组件的方式使用
+// [相册]作为组件的方式使用
 <sp-img-details></sp-img-details>
 ```
 
@@ -76,7 +76,7 @@ export default {
 
 ```
 
-// 作为组件的方式使用
+// [全选/复选框]作为组件的方式使用
 <sp-checkbox></sp-checkbox>
 ```
 
@@ -89,14 +89,14 @@ export default {
 	v-model="checkAlled"
 	@change="getCheckArr">全选&nbsp;&nbsp;
 </sp-checkbox>
-<div v-for="(item, index) in checkArr">
+<sp-checkbox-group v-for="(item, index) in checkArr">
     <sp-checkbox
 	  	v-model="item.checked"
 	  	:checkedArr="checkArr"
 	  	:checkAlled="checkAlled"
 	  	@change="getCheckAlled">选项{{index}}
     </sp-checkbox>
-</div>
+</sp-checkbox-group>
 ```
 
 ```js
@@ -134,3 +134,59 @@ export default {
 | checkboxAll        | 是否为全选按钮 |Boolean | false
 | checkAlled        | 全选 |Boolean | false
 | checkSize        | checked大小 |Array | [14, 14]
+
+```
+
+// [单选/复选按钮]作为组件的方式使用
+<sp-checkbox-button></sp-checkbox-button>
+```
+
+### 配置
+
+```html
+<sp-checkbox
+  :checkList="checkList"
+  :checkValues="checkValues"
+  @callback="getSaskStatus">
+</sp-checkbox>
+```
+
+```js
+<script>
+export default {
+  data () {
+    return {
+      checkValues: ['01'],
+      checkList: [
+        {
+          id: '01',
+          name: '已付款',
+        },{
+          id: '02',
+          name: '已发货',
+        },{
+          id: '03',
+          name: '已签收',
+        },
+      ]
+    }
+  },
+  methods: {
+    getSaskStatus(val) {
+      this.checkValues = val;
+    }
+  }
+}
+</script>
+```
+
+### Props
+
+|    name    |    Description   |   type   |default|
+| -----------------  | ---------------- | :--------: | :----------: |
+| checkList       | checked数组 |Array| []
+| checkValues        | 默认选中项 |Array | []
+| checkMany        | 是否为多选按钮 |Boolean | false
+| checkboxSize        | checked大小 |String | 'lg'
+
+```

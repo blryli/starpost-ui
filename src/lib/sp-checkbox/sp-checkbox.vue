@@ -1,8 +1,8 @@
 <template>
-    <label>
+    <label role="checkbox">
         <div class="icheckbox_square-green" :class="{active: value == true}" style="position: relative;" :style="{width: checkSize[0]+'px',height: checkSize[1]+'px'}">
-            <input v-if="checkboxAll == true" type="checkbox" class="check-all" :value="value" @click="updateValueAll(value)">
-            <input v-else type="checkbox" class="check-all" :value="value" @click="updateValue(value)">
+            <input v-if="checkboxAll == true" type="checkbox" class="check" :value="value" @click="updateValueAll(value)">
+            <input v-else type="checkbox" class="check" :value="value" @click="updateValue(value)">
             <i class="iconfont icon-gou" :style="{fontSize: checkSize[0]+'px'}" v-if="value == true"></i>
         </div>
         <slot></slot>
@@ -48,7 +48,7 @@
             this.$emit('input', value)
             this.$emit('change', this.checkedArr)
         },
-        updateValue(value, checkedArr) {
+        updateValue(value) {
             value = !value
             this.$emit('input', value)
             let checkAlledVal
@@ -90,7 +90,7 @@
         border-color: #15A6BB;
         background-color: #15A6BB;
     }
-    .check-all{
+    .check{
         position: absolute;z-index: 10; opacity: 0;top: 0%; left: 0%;cursor: pointer;margin-top: 0;
     }
 }

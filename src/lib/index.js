@@ -1,14 +1,16 @@
 import SpImgDetails from './sp-img/sp-img-details.vue'
-import SpImgDcut from './sp-img/sp-img-cut.vue'
 import SpTree from './sp-tree/sp-tree.vue'
 import SpCheckbox from './sp-checkbox/sp-checkbox.vue'
+import SpCheckboxButton from './sp-checkbox/sp-checkbox-button.vue'
+import SpCheckboxGroup from './sp-checkbox/sp-checkbox-group.vue'
 
 const starpost = {
 	install (Vue, options) {
 		Vue.component( SpImgDetails.name, SpImgDetails )
-		Vue.component( SpImgDcut.name, SpImgDcut )
 		Vue.component( SpTree.name, SpTree )
 		Vue.component( SpCheckbox.name, SpCheckbox )
+		Vue.component( SpCheckboxButton.name, SpCheckboxButton )
+		Vue.component( SpCheckboxGroup.name, SpCheckboxGroup )
 		// vuePayKeyboard.name 组件的name属性
         // 类似通过 this.$xxx 方式调用插件的 其实只是挂载到原型上而已
         // Vue.prototype.$xxx  // 最终可以在任何地方通过 this.$xxx 调用
