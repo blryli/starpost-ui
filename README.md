@@ -26,12 +26,9 @@ Vue.use(starpostUI)
 
 // 或者直接使用script导入
 <script src="https://unpkg.com/starpost-ui/dist/starpost-ui.js"></script>
-
-// [相册]作为组件的方式使用
-<sp-img-details></sp-img-details>
 ```
 
-### 配置
+### [相册]组件配置
 
 ```html
 <sp-img-details
@@ -76,11 +73,7 @@ export default {
 
 ```
 
-// [全选/复选框]作为组件的方式使用
-<sp-checkbox></sp-checkbox>
-```
-
-### 配置
+### [全选/复选框]组件配置
 
 ```html
 <sp-checkbox
@@ -137,11 +130,7 @@ export default {
 
 ```
 
-// [单选/复选按钮]作为组件的方式使用
-<sp-checkbox-button></sp-checkbox-button>
-```
-
-### 配置
+### [单选/复选按钮]组件配置
 
 ```html
 <sp-checkbox
