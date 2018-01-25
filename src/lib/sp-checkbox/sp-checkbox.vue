@@ -36,6 +36,7 @@
         }
     },
     methods: {
+        //点击单选
         updateValueAll(value) {
             value = !value
             this.checkedArr.forEach((d, i)=>{
@@ -48,6 +49,7 @@
             this.$emit('input', value)
             this.$emit('change', this.checkedArr)
         },
+        //点击单选
         updateValue(value) {
             value = !value
             this.$emit('input', value)
@@ -74,6 +76,7 @@
 
 <style lang="scss" scoped>
 @import '../../../static/icon-font/iconfont.css';
+@import '../../scss/variable';
 
 .icheckbox_square-green, .iradio_square-green {
     display: inline-block;
@@ -84,11 +87,11 @@
     border: 1px solid #aaa;
     border-radius: 2px;
     &:hover{
-        border-color: #15A6BB;
+        border-color: $bgColor;
     }
     &.active{
-        border-color: #15A6BB;
-        background-color: #15A6BB;
+        border-color: $bgColor;
+        background-color: $bgColor;
     }
     .check{
         position: absolute;z-index: 10; opacity: 0;top: 0%; left: 0%;cursor: pointer;margin-top: 0;

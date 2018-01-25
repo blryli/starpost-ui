@@ -2,11 +2,11 @@
 	<div>
 		<slot></slot>
         <ul class="checkbox">
-        	<li :class="{'active': isCheck}" style="margin-right:-4.7px;z-index: 3;" :style="{padding: checkSize(checkboxSize)}">
+        	<li :class="{'active': isCheck}" style="margin-right:-4.7px;z-index: 3;" v-if="checkAllShow == true" :style="{padding: checkSize(checkboxSize)}">
         		<i></i>
         		<span role="button" @click="checkAll()">全选</span>
         	</li>
-        	<li v-for="(item , index) in checkList" :key="item.id" :style="{padding: checkSize(checkboxSize)}" :class="{'active': contains(checkarr, item.id) && isCheck == false}"  @click="check(item.id)">
+        	<li v-for="item in checkList" :key="item.id" :style="{padding: checkSize(checkboxSize)}" :class="{'active': contains(checkarr, item.id) && isCheck == false}"  @click="check(item.id)">
         		<i></i>
         		<span role="button">{{item.name}}</span>
         	</li>
@@ -25,23 +25,27 @@ export default {
 		}
 	},
 	props: {
-		checkList: {
+		checkList: {//选项列表
 			type: Array,
 			default: function () {
 				return []
 			}
 		},
-		checkValues: {
+		checkValues: {//初始值
 			type: Array,
 			default: function () {
 				return []
 			}
 		},
-		checkMany: {
+		checkMany: {//是否开启多选
 			type: Boolean,
 			default: false
 		},
-		checkboxSize: {
+		checkAllShow: {//是否显示全选按钮
+			type: Boolean,
+			default: true
+		},
+		checkboxSize: {//按钮大小
 			type: String,
 			default: 'lg'
 		}
@@ -103,6 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../scss/variable';
 .checkbox{
     padding: 0;
     margin: 0;
@@ -119,8 +124,8 @@ export default {
         i{
         	width: 100%;
         	height: 100%;
-        	background-color: #5bc0de;
-        	border-color: #46b8da;
+        	background-color: $bgColor;
+        	border-color: $bdColor;
         	opacity: 0;
         	position: absolute;
         	z-index: 0;
@@ -133,6 +138,7 @@ export default {
             font-size: 14px;
             position: relative;
             z-index: 1;
+            user-select:none;
         }
         &:hover{
             i{
@@ -140,8 +146,8 @@ export default {
             }
         }
         &.active{
-            background-color: #5bc0de;
-            border-color: #46b8da;
+            background-color: $bgColor;
+            border-color: $bdColor;
             span{
                 color: #fff;
             }
@@ -151,7 +157,7 @@ export default {
             border-radius: 4px 0 0 4px;
             border-left: 1px solid #ccc;
             &.active{
-            	border-color: #46b8da;
+            	border-color: $bgColor;
             }
         }
         &:last-child{

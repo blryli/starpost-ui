@@ -1,23 +1,29 @@
 <template>
   <div>
-      <i v-if="urlArr == '' || urlArr == null || urlArr.length == 0" :class="{'more-img':showOne == true}" :style="{'font-size':imgSize[0]+'px'}" class="iconfont icon-wutu"></i>
-      <img v-else class="small-img"  v-for="(item, index) in urlArr" :class="[{'more-img':showOne == true},{'img-i-b':alignRow == true}]" :style="{width:imgSize[0]+'px',height:imgSize[1]+'px'}"  @click="showImage(index, scrollbar)" :src="item.src">
+      <i v-if="!isUrlArr()" :class="{'more-img':showOne == true}" :style="{'font-size':imgSize[0]+'px'}" class="iconfont icon-wutu"></i>
+      <img v-if="isUrlArr() && isObject" class="small-img"  v-for="(item, index) in urlArr" :key="index" :class="[{'more-img':showOne == true},{'img-i-b':alignRow == true}]" :style="{width:imgSize[0]+'px',height:imgSize[1]+'px'}"  @click="showImage(index, scrollbar)" :src="item.src">
+      <img v-if="isUrlArr() && !isObject" class="small-img"  v-for="(item, index) in urlArr" :key="index" :class="[{'more-img':showOne == true},{'img-i-b':alignRow == true}]" :style="{width:imgSize[0]+'px',height:imgSize[1]+'px'}"  @click="showImage(index, scrollbar)" :src="item">
     	<div v-if="show == true" class="fix-img" @click="shadeCloseImage(shadeClose)"></div>
     	<div id="big-img" ref="box" :style="{'margin-left': (-imgBoxSize[0])/2+'px',width: imgBoxSize[0]+'px'}">
-          <div class="text" v-if="urlArr[0].text">{{urlArr[showImgIndex].text}}</div>
+          <div class="box-header" v-if="urlArr[showImgIndex].text">
+            <span class="box-header-title">{{urlArr[showImgIndex].text}}</span>
+            <slot name="header"></slot>
+          </div>
           <div class="show-img" :style="{height: imgBoxSize[1]+'px'}">
     	        <img :src="urlSrc" ref="urlSrc" :style="{'max-width': imgBoxSize[0]+'px'}">
-              <div class="cutBox" v-if="cutBoxShow == true">
+              <div class="cutBox" v-if="cutBoxShow == true && urlArr.length > 1">
                   <p class="pre" @click="cutPre()"><i class="iconfont icon-pre"></i></p>
                   <p class="next" @click="cutNext()"><i class="iconfont icon-next"></i></p>
               </div>
     	    </div>
     	    <div class="img-list" :style="{'max-width': imgBoxSize[0]+'px'}" v-if="smallImgShow == true">
-    	        <img v-for="(item, index) in urlArr" ref="img" :src="item.src" @mouseenter="showBigImage(index)">
+    	        <img v-if="isUrlArr() && isObject" v-for="(item, index) in urlArr" :key="index" ref="img" :src="item.src" @mouseenter="showBigImage(index)" @click="clickShowBigImage(index)">
+    	        <img v-if="isUrlArr() && !isObject" v-for="(item, index) in urlArr" :key="index" ref="img" :src="item" @mouseenter="showBigImage(index)" @click="clickShowBigImage(index)">
     	    </div>
     	    <i class="iconfont icon-x" @click="hideImage"></i>
-          <slot></slot>
+          <slot name="footer"></slot>
       </div>
+      <slot name="edit"></slot>
   </div>
 </template>
 
@@ -71,21 +77,35 @@ export default {
         type:Boolean,
         default : false
       },
+      cutClick: {//是否切换点击缩略图查看大图
+        type:Boolean,
+        default : false
+      },
     },
     data () {
         return {
-           showImgIndex: 0,
-           urlSrc: '',
-           show: '',
-           bodyHeight: true
+           showImgIndex: 0,//当前展示图片的index
+           urlSrc: '',//展示的大图
+           show: false,//遮罩显示
+           isObject: true,//数组内容是对象还是字符串
        }
     },
-    watch: {
-      urlSrc() {
-        
+    created() {
+      if(this.urlArr.length && this.urlArr.length > 0) {
+        if(typeof this.urlArr[0] == 'object'){
+          this.isObject = true;
+        }
+        if(typeof this.urlArr[0] == 'string' && this.urlArr[0].length > 0){
+          this.isObject = false;
+        }
       }
     },
     methods:{
+      //urlArr是否存在
+      isUrlArr() {
+        let isUrlArr;
+        return isUrlArr = (this.urlArr == '' || this.urlArr == null || this.urlArr.length == 0) ? false : true;
+      },
       //弹窗
   	 	showImage(index, scrollbar) {
           document.getElementById('big-img').classList.add("in");
@@ -94,11 +114,15 @@ export default {
             document.body.style.overflowY = 'hidden';
             document.body.style.height = '100%';
           }
-          this.showImgIndex = index
-          this.urlSrc = this.urlArr[index].src
+          this.showImgIndex = index;
+          this.urlSrc = this.isObject ? this.urlArr[index].src : this.urlArr[index];
           this.show = true;
           if(this.smallImgShow == true) {
-            this.showBigImage(index) 
+            if(!this.cutClick) {
+              this.showBigImage(index) ;
+            }else {
+              this.clickShowBigImage(index) ;
+            }
           }
       },
       //切换动效
@@ -110,11 +134,21 @@ export default {
           _this.$refs.urlSrc.classList.remove("fade_in");
         }, 300)
       },
-      //大图切换
+      //移入大图切换
       showBigImage(index) {
+        if(!this.cutClick){
           this.showImgIndex = index
           this.cutBorderColor();
           this.cutAnimation()
+        }
+      },
+      //点击大图切换
+      clickShowBigImage(index) {
+          if(this.cutClick){
+            this.showImgIndex = index
+            this.cutBorderColor();
+            this.cutAnimation()
+          }
       },
       //遮罩关闭
       hideImage() {
@@ -139,12 +173,13 @@ export default {
       },
       //切换缩略图边框颜色
       cutBorderColor() {
-        this.urlSrc = this.urlArr[this.showImgIndex].src
+        this.urlSrc = this.isObject ? this.urlArr[this.showImgIndex].src : this.urlArr[this.showImgIndex];
         if(this.smallImgShow == true) {
           this.$refs.img.forEach((d, i) => {
             d.style.borderColor = 'transparent';
           })
           this.$refs.img[this.showImgIndex].style.borderColor = this.defaultColor
+          this.$emit('get-index', this.showImgIndex)
         }
       },
       //上一张
@@ -262,10 +297,14 @@ export default {
 .icon-wutu{
   color: #888;
 }
-.text{
+.box-header{
+  position: relative;
+  overflow: hidden;
   margin-bottom: 8px;
-  font-size: 16px;
-  color: #333;
+  .box-header-title{
+    font-size: 16px;
+    color: #333;
+  }
 }
 //左右切换
 .cutBox{
