@@ -16,7 +16,7 @@
         <span v-if="router == false && !menu.url" :href="menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :height="height" :Width="Width" :menuStatus="menuStatus" :style="{'width': Width, 'z-index': zIndex(menu)}"/>
+        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :height="height" :width="width" :menuStatus="menuStatus" :style="{'width': width, 'z-index': zIndex(menu)}"/>
       </sp-collapse-transition>
     </li>
   </ul>
@@ -55,7 +55,7 @@ export default {
         type: Boolean,
         default: false
       },
-      Width: {//menu宽度
+      width: {//menu宽度
         type: String,
         default: '200px'
       },
