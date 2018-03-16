@@ -38,20 +38,17 @@ export default {
     }
 	}
   .sp-menu-icon{
-    width: 20px;
-    border: 1px solid #ddd;
+    width: 24px;
     padding: 6px;
     display: block;
     border-radius: 2px;
     cursor: pointer;
     margin-bottom: 6px;
-    &:hover{
-      background-color: #f5f5f5;
-    }
+    color: #333;
     &:after{
       content: '';
       display: block;
-      width: 20px;  
+      width: 24px;  
       height: 3px;  
       border-top: 3px solid #888;  
       border-bottom: 3px solid #888;  

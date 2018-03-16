@@ -167,6 +167,7 @@ export default {
       this.status = val
       console.log('菜单组件 是否展开: '+val)
     },
+    //菜单选中的ID
     getSelectId(val) {
       this.selectId = val
       console.log('选中的ID： '+ val)

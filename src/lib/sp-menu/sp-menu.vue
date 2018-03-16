@@ -4,13 +4,19 @@
       <div class="sp-title" :class="{active: menu.active, 'sp-arrow': menu.children}" @click="callBack(menu)" 
       :style="{'padding-left': pdleft(menu),'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
-        <i class="iconfont" v-if="menu.icon" :class="[menu.icon]"></i>
-        <router-link v-if="router == true && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">{{ menu.name }}</router-link>
-        <a v-if="router == false && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">{{ menu.name }}</a>
-        <span v-if="router == false && !menu.url" :href="menu.url">{{ menu.name }}</span>
+        <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
+        <router-link v-if="router == true && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+          <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
+          <span :class="{'is-hover': menuStatus == false && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+          </router-link>
+        <a v-if="router == false && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+          <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
+          <span :class="{'is-hover': menuStatus == false && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+        </a>
+        <span v-if="router == false && !menu.url" :href="menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :Width="Width" :menuStatus="menuStatus" :style="{'width': Width, 'z-index': zIndex(menu)}"/>
+        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :height="height" :Width="Width" :menuStatus="menuStatus" :style="{'width': Width, 'z-index': zIndex(menu)}"/>
       </sp-collapse-transition>
     </li>
   </ul>
@@ -143,10 +149,12 @@ export default {
     transition: border-color .3s,background-color .3s,color .3s;
     box-sizing: border-box;
     white-space: nowrap;
+    a{
+      width: 100%;
+    }
     a, span{
       text-decoration: none;
       display: inline-block;
-      width: 100%;
     }
     a, span, i{
       position: relative;
@@ -165,6 +173,24 @@ export default {
       }
       a, span, i{
         opacity: 1;
+      }
+      .is-hover{
+        left: 10px;
+        width: auto;
+        padding: 0 10px;
+        background-color: #2e323e;
+        &:before{
+          content: '';
+          position: absolute;
+          left: -4px;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 0;
+          height: 0;
+          border-top: 8px solid transparent;
+          border-right: 8px solid #2e323e;
+          border-bottom: 8px solid transparent;
+        }
       }
     }
   }
@@ -202,7 +228,7 @@ export default {
 }
 .iconfont {
     vertical-align: middle;
-    margin-right: 6px;
+    margin-right: 12px;
     font-size: 18px;
     width: 24px;
     text-align: center;
@@ -247,4 +273,5 @@ export default {
     }
   }
 }
+
 </style>
