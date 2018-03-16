@@ -23,7 +23,7 @@ export default {
   methods: {
   	change(menuStatus) {
   		menuStatus = !menuStatus
-  		this.$emit('change', menuStatus)
+  		this.$emit('status-change', menuStatus)
   	}
   }
 }

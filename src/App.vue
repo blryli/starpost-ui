@@ -15,9 +15,9 @@
       <sp-select :options="options" :selectValue="selectValue" @change="getSelectValue"></sp-select>
     </div>
     <h3>menu 左侧菜单</h3>
-    <div class="sp-menu-box">
-      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @change="callBackMenuCrrut">
-        <sp-menu :menus="menus" :menuStatus="status"/>
+    <div class="sp-menu-content">
+      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
+        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" @select-id="getSelectId"/>
       </sp-menu-group>
     </div>
   </div>
@@ -29,8 +29,15 @@ export default {
   data () {
     return {
       status: true,
+      selectId: '1',
       menus: [{
         id: '1',
+        name: '一级 1',
+        active: false,
+        icon: 'icon-wutu',
+        url:'javascript:;'
+      },{
+        id: '2',
         name: '一级 1',
         active: false,
         icon: 'icon-wutu',
@@ -38,7 +45,7 @@ export default {
           id: '1-0',
           name: '二级 1-0',
           active: false,
-          url:'#'
+          url:'javascript:;'
         },{
           id: '1-1',
           name: '二级 1-1',
@@ -47,7 +54,7 @@ export default {
             id: '1-1-1',
             name: '三级 1-1-1',
             active: false,
-            url:'#'
+            url:'javascript:;'
           },{
             id: '1-1-2',
             name: '三级 1-1-2',
@@ -56,12 +63,12 @@ export default {
               id: '1-1-1-1',
               name: '4级 1-1-1-1',
               active: false,
-              url:'#'
+              url:'javascript:;'
             }]
           }]
         }]
       },{
-        id: '2',
+        id: '3',
         name: '一级 2',
         active: false,
         icon: 'icon-wutu',
@@ -73,12 +80,12 @@ export default {
             id: '2-2-1',
             name: '三级 2-2-1',
             active: false,
-            url:'#'
+            url:'javascript:;'
           },{
             id: '2-2-2',
             name: '三级 2-2-2',
             active: false,
-            url:'#'
+            url:'javascript:;'
           }]
         }]
       }],
@@ -151,9 +158,18 @@ export default {
       console.log('选择器 选中的值: '+val)
     },
     //菜单组件 是否展开
-    callBackMenuCrrut(val) {
+    getStatus(val) {
       this.status = val
       console.log('菜单组件 是否展开: '+val)
+    },
+    //菜单组件 是否展开
+    getStatus(val) {
+      this.status = val
+      console.log('菜单组件 是否展开: '+val)
+    },
+    getSelectId(val) {
+      this.selectId = val
+      console.log('选中的ID： '+ val)
     },
     //图片组件获取当前index
     getIndex(val) {
@@ -174,7 +190,7 @@ ul, li{
   padding: 0;
   list-style: none;
 }
-.sp-menu-box{
+.sp-menu-content{
   width: 300px;
   border: 1px solid #ddd;
   padding: 20px;

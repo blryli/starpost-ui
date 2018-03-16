@@ -245,8 +245,11 @@ export default {
 <sp-menu-group
   :menuWidth="['40px', '200px']"
   :menuStatus="status"
-  @change="callBackMenuCrrut">
-  <sp-menu :menus="menus"/>
+  @status-change="getStatus">
+  <sp-menu :menus="menus"
+    :menuStatus="status" 
+    :select-id="selectId" 
+    @select-id="getSelectId"/>
 </sp-menu-group>
 ```
 
@@ -256,6 +259,7 @@ export default {
   data () {
     return {
       status: true,
+      selectId: '1',
       menus: [{
         id: '1',
         name: '一级 1',
@@ -292,9 +296,14 @@ export default {
   },
   methods: {
     //菜单组件 是否展开
-    callBackMenuCrrut(val) {
+    getStatus(val) {
       this.status = val
-      console.log('菜单组件 是否展开: '+val)
+      console.log('菜单组件 是否展开: '+ val)
+    },
+    //菜单选中的ID
+    getSelectId(val) {
+      this.selectId = val
+      console.log('选中的ID： '+ val)
     }
   }
 }
@@ -306,11 +315,13 @@ export default {
 |    name    |    Description   |   type   |default|
 | -----------------  | ---------------- | :--------: | :----------: |
 | menus       | 菜单数组 |Array| []
-| backgroundColor  | 背景颜色 |String | '#222'
-| hoverBgColor  | hove背景颜色 |String | '#000'
+| backgroundColor  | 背景颜色 | String | '#222'
+| hoverBgColor  | hove背景颜色 | String | '#000'
 | menuColor  | 字体颜色 |String | '#fff'
-| activeMenuColor  | 选中字体颜色 |String | '#15A6BB'
-| accordion  | 是否开启手风琴模式 |Boolean | false
-| menuWidth  | 菜单尺寸 |Array | ['40px', '200px']
-| menuStatus  | 菜单是否默认展开 |Boolean | true
-| router  | 是否使用router |Boolean | false
+| activeMenuColor  | 选中改变字体颜色 | Array | [false, '#2e323e']
+| accordion  | 是否开启手风琴模式 | Boolean | false
+| width  | 菜单尺寸 | String |  '200px'
+| height  | 每行高度 | String |  '36px'
+| menuStatus  | 菜单是否默认展开 | Boolean | true
+| router  | 是否使用router | Boolean | false
+| selectId  | 选中的ID | String | ''

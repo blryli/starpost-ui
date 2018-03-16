@@ -1,15 +1,16 @@
 <template>
-  <ul :style="{'background-color': backgroundColor}" :class="{ 'sp-menu-small': menuStatus == false}">
-    <li class="sp-menu" v-for="menu in menus" :key="menu.id">
-      <div class="sp-title" :class="{active: menu.active == true, 'sp-arrow': menu.children}" @click="callBack(menu)" :style="{'padding-left': pdleft(menu),'color': menuColor,'border-color': menuColor}">
+  <ul :class="{ 'sp-menu-small': menuStatus == false}">
+    <li class="sp-menu" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
+      <div class="sp-title" :class="{active: menu.active, 'sp-arrow': menu.children}" @click="callBack(menu)" 
+      :style="{'padding-left': pdleft(menu),'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
-        <i class="iconfont" v-show="menu.icon" :class="[menu.icon]"></i>
-        <router-link v-if="router == true && menu.url" :to="menu.url" :class="{crrut: crru == menu.id}" @click.native="aActive(menu.id)" :style="{'color': menuColor}">{{ menu.name }}</router-link>
-        <a v-if="router == false && menu.url" :href="menu.url" :class="{crrut: crrutFor == menu.id}" @click="aActive(menu.id)" :style="{'color': menuColor}">{{ menu.name }}</a>
-        <span v-if="router == false && !menu.url" :href="menu.url" :style="{'color': menuColor}">{{ menu.name }}</span>
+        <i class="iconfont" v-if="menu.icon" :class="[menu.icon]"></i>
+        <router-link v-if="router == true && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">{{ menu.name }}</router-link>
+        <a v-if="router == false && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">{{ menu.name }}</a>
+        <span v-if="router == false && !menu.url" :href="menu.url">{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.active == true" :menus="menu.children" :crrutFor="crru" @change="getCrrutID" :menuWidth="menuWidth" :menuStatus="menuStatus" :style="{'width': menuWidth[1], 'z-index': zIndex(menu)}"/>
+        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :Width="Width" :menuStatus="menuStatus" :style="{'width': Width, 'z-index': zIndex(menu)}"/>
       </sp-collapse-transition>
     </li>
   </ul>
@@ -28,29 +29,31 @@ export default {
       },
       backgroundColor: {//背景颜色
         type: String,
-        default: '#222'
+        default: '#2e323e'
       },
-      hoverBgColor: {//hove背景颜色
+      hoverBgColor: {//hove及选中背景颜色
         type: String,
-        default: '#000'
+        default: '#409eff'
       },
       menuColor: {//字体颜色
         type: String,
         default: '#fff'
       },
-      activeMenuColor: {//选中字体颜色
-        type: String,
-        default: '#15A6BB'
+      activeMenuColor: {//选中改变字体颜色
+        type: Array,
+        default: [false, '#fff']
       },
       accordion: {//是否开启手风琴模式
         type: Boolean,
         default: false
       },
-      menuWidth: {//menu宽度
-        type: Array,
-        default: function() {
-          return ['40px', '200px']
-        },
+      Width: {//menu宽度
+        type: Number,
+        default: '200px'
+      },
+      height: {//menu宽度
+        type: Number,
+        default: '36px'
       },
       menuStatus: {//是否是展开状态
         type: Boolean,
@@ -60,54 +63,59 @@ export default {
         type: Boolean,
         default: false
       },
-      crrutFor: {//选中字体颜色
+      selectId: {//选中的ID
         type: String,
         default: ''
-      },
+      }
     },
     data() {
       return {
-        crru: this.crrutFor
       }
     },
     methods:{
+      //是否是一级按钮
+      isUpNav(menu) {
+        return menu.id.split('-').length == 1
+      },
       //menu收缩展开
       callBack(menu) {
         if(menu.children && this.menuStatus == true){
-          menu.active = !menu.active
+          menu.active = !menu.active;
           if(this.accordion == false) {//手风琴
-            let l = this.menus.length
+            let l = this.menus.length;
             for (let i = 0; i < l; i++) {
-              if(menu.active == true) {
+              if(menu.active) {
                 if(this.menus[i].id != menu.id) {
-                  this.menus[i].active = false
+                  this.menus[i].active = false;
+                  menu.id.split('-').length == 1 && this.menus[i].children && this.navToFalse(this.menus[i].children);
                 }
               }
             }
           }
-        }else return;
+        }else {
+          this.$emit('select-id', menu.id)
+        }
+      },
+      //关闭失去激活状态的子菜单
+      navToFalse(array) {
+        for (let i = 0; i < array.length; i++) {
+          array[i].active == true && (array[i].active = false);
+          let arr = array[i].children;
+          arr && this.navToFalse(arr);
+        }
       },
       //层级padding-left
       pdleft(menu) {
-        let l = menu.id.split('-').length
-        return l*10 + 10 +'px'
+        let l = menu.id.split('-').length;
+        return l*10 + 10 +'px';
       },
       zIndex(menu) {
-        let l = menu.id.split('-').length
-        return 1000 - l*2
+        let l = menu.id.split('-').length;
+        return 1000 - l*2;
       },
-      aActive(id) {
-        // if(this.crrutFor) {
-          // this.crrutFor == id
-        // }else {
-          // this.crrutFor = id
-        // }
-        // console.log(id)
-        this.$emit('change', id)
-      },
-      getCrrutID(val) {
-        this.crru = val
-        // console.log('>>>'+this.crru)
+      //选中的ID
+      getSelectId(val) {
+        this.$emit('select-id', val);
       }
     }
 }
@@ -125,8 +133,6 @@ export default {
 .sp-menu{
   position: relative;
   .sp-title{
-    height: 36px;
-    line-height: 36px;
     font-size: 14px;
     padding: 0 20px;
     z-index: 0;
@@ -135,7 +141,7 @@ export default {
     transition: border-color .3s,background-color .3s,color .3s;
     box-sizing: border-box;
     white-space: nowrap;
-    a{
+    a, span{
       text-decoration: none;
       display: inline-block;
       width: 100%;
@@ -149,7 +155,7 @@ export default {
     }
     a, span, i{
       opacity: .7;
-      transition: all .1s ease;
+      transition: opacity .1s ease;
     }
     &:hover{
       .bg-hove{
@@ -158,9 +164,6 @@ export default {
       a, span, i{
         opacity: 1;
       }
-    }
-    &:active{
-      color: #15A6BB;
     }
   }
   //css下拉箭头
@@ -174,7 +177,7 @@ export default {
       border-bottom: 1px solid;
       position: absolute;
       z-index: 5;
-      top: 11px;
+      top: 38%;
       right: 15px;
       opacity: .7;
       transform: rotate(-45deg);
@@ -184,7 +187,7 @@ export default {
     &.active{
       &:after {
         transform: rotate(-225deg);
-        top: 15px;
+        top: 45%;
         transition: all .3s ease-in-out;
       }
     }
