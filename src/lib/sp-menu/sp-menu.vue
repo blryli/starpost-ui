@@ -41,18 +41,20 @@ export default {
       },
       activeMenuColor: {//选中改变字体颜色
         type: Array,
-        default: [false, '#fff']
+        default: function() {
+          return [false, '#fff']
+        }
       },
       accordion: {//是否开启手风琴模式
         type: Boolean,
         default: false
       },
       Width: {//menu宽度
-        type: Number,
+        type: String,
         default: '200px'
       },
       height: {//menu宽度
-        type: Number,
+        type: String,
         default: '36px'
       },
       menuStatus: {//是否是展开状态
