@@ -1,22 +1,35 @@
 <template>
-  <ul :class="{ 'sp-menu-small': menuStatus == false}">
+  <ul :class="{ 'sp-menu-small': !menuStatus }">
     <li class="sp-menu" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
-      <div class="sp-title" :class="{active: menu.active, 'sp-arrow': menu.children}" @click="callBack(menu)" 
+      <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.id}]" @click="clickMenu(menu)" 
       :style="{'padding-left': pdleft(menu),'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
         <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
-        <router-link v-if="router == true && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+        <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': menuStatus == false && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
-          </router-link>
-        <a v-if="router == false && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+        </router-link>
+        <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': menuStatus == false && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
         </a>
-        <span v-if="router == false && !menu.url" :href="menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
+        <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.active" :menus="menu.children" :selectId="selectId" @select-id="getSelectId" :height="height" :width="width" :menuStatus="menuStatus" :style="{'width': width, 'z-index': zIndex(menu)}"/>
+        <sp-menu v-show="menu.active" @select-id="getSelectId" @page-config="getPageConfig"
+          :menus="menu.children" 
+          :backgroundColor="backgroundColor" 
+          :hoverBgColor="hoverBgColor" 
+          :menuColor="menuColor" 
+          :activeMenuColor="activeMenuColor" 
+          :accordion="accordion" 
+          :width="width" 
+          :height="height" 
+          :menuStatus="menuStatus" 
+          :router="router" 
+          :selectId="selectId" 
+          :pagePermissions="pagePermissions"
+        :style="{'width': width, 'z-index': zIndex(menu)}"/>
       </sp-collapse-transition>
     </li>
   </ul>
@@ -53,7 +66,7 @@ export default {
       },
       accordion: {//是否开启手风琴模式
         type: Boolean,
-        default: false
+        default: true
       },
       width: {//menu宽度
         type: String,
@@ -68,6 +81,10 @@ export default {
         default: true
       },
       router: {//是否使用router
+        type: Boolean,
+        default: false
+      },
+      pagePermissions: {//是否开启页面权限功能
         type: Boolean,
         default: false
       },
@@ -86,30 +103,45 @@ export default {
         return menu.id.split('-').length == 1
       },
       //menu收缩展开
-      callBack(menu) {
-        if(menu.children && this.menuStatus == true){
+      clickMenu(menu) {
+        if(menu.children && this.menuStatus){
           menu.active = !menu.active;
-          if(this.accordion == false) {//手风琴
+          if(this.accordion) {//手风琴
             let l = this.menus.length;
             for (let i = 0; i < l; i++) {
               if(menu.active) {
                 if(this.menus[i].id != menu.id) {
                   this.menus[i].active = false;
-                  menu.id.split('-').length == 1 && this.menus[i].children && this.navToFalse(this.menus[i].children);
+                  menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
                 }
               }
             }
           }
         }else {
-          this.$emit('select-id', menu.id)
+          let config = menu.configs ? menu.configs : [];
+          this.$emit('select-id', menu.id);
+          this.pagePermissions && this.$emit('page-config', config);
+          sessionStorage.selectId = menu.id;
+          sessionStorage.configs = JSON.stringify(config);
+          if(this.accordion) {//手风琴
+            let l = this.menus.length;
+            for (let i = 0; i < l; i++) {
+              if(this.menus[i].id != menu.id) {
+                this.menus[i].active = false;
+                menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+              }
+            }
+          }
         }
       },
-      //关闭失去激活状态的子菜单
-      navToFalse(array) {
+      //开启router下 刷新页面保持菜单激活状态
+      navClose(array) {
         for (let i = 0; i < array.length; i++) {
-          array[i].active == true && (array[i].active = false);
           let arr = array[i].children;
-          arr && this.navToFalse(arr);
+          if(array[i].active == true) {
+            array[i].active = false 
+          }
+          arr && this.navClose(arr);
         }
       },
       //层级padding-left
@@ -124,7 +156,11 @@ export default {
       //选中的ID
       getSelectId(val) {
         this.$emit('select-id', val);
-      }
+      },
+      //获取页面权限
+      getPageConfig(val) {
+        this.pagePermissions && this.$emit('page-config', val);
+      },
     }
 }
 </script>
@@ -191,6 +227,11 @@ export default {
           border-right: 8px solid #2e323e;
           border-bottom: 8px solid transparent;
         }
+      }
+    }
+    &.is-active{
+      a, span, i{
+        opacity: 1;
       }
     }
   }

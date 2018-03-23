@@ -10,14 +10,10 @@
     </div>
     <h3>Checkbox 单选/复选按钮</h3>
     <sp-checkbox-button :checkList="checkList" :checkValues="checkValues" @callback="getSaskStatus">状态</sp-checkbox-button>
-    <h3>Select 选择器</h3>
-    <div class="sp-select-box">
-      <sp-select :options="options" :selectValue="selectValue" @change="getSelectValue"></sp-select>
-    </div>
     <h3>menu 左侧菜单</h3>
     <div class="sp-menu-content">
       <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
-        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" @select-id="getSelectId"/>
+        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" />
       </sp-menu-group>
     </div>
   </div>
@@ -30,61 +26,67 @@ export default {
     return {
       status: true,
       selectId: '1',
+      pageConfig: [],
       menus: [{
         id: '1',
         name: '一级 1',
-        active: false,
         icon: 'icon-wutu',
-        url:'javascript:;'
+        url:'javascript:;',
+        configs: ['aaa', 'bbb', 'ccc']
       },{
         id: '2',
-        name: '一级 1',
-        active: false,
-        icon: 'icon-wutu',
-        children: [{
-          id: '1-0',
-          name: '二级 1-0',
-          active: false,
-          url:'javascript:;'
-        },{
-          id: '1-1',
-          name: '二级 1-1',
-          active: false,
-          children: [{
-            id: '1-1-1',
-            name: '三级 1-1-1',
-            active: false,
-            url:'javascript:;'
-          },{
-            id: '1-1-2',
-            name: '三级 1-1-2',
-            active: false,
-            children: [{
-              id: '1-1-1-1',
-              name: '4级 1-1-1-1',
-              active: false,
-              url:'javascript:;'
-            }]
-          }]
-        }]
-      },{
-        id: '3',
         name: '一级 2',
         active: false,
         icon: 'icon-wutu',
         children: [{
+          id: '2-1',
+          name: '二级 2-1',
+          url:'javascript:;',
+          configs: ['aaa', 'ccc']
+        },{
           id: '2-2',
           name: '二级 2-2',
           active: false,
           children: [{
             id: '2-2-1',
             name: '三级 2-2-1',
-            active: false,
             url:'javascript:;'
           },{
             id: '2-2-2',
             name: '三级 2-2-2',
             active: false,
+            children: [{
+              id: '2-2-2-1',
+              name: '4级 2-2-2-1',
+              url:'javascript:;'
+            }]
+          },{
+            id: '2-2-3',
+            name: '三级 2-2-3',
+            active: false,
+            children: [{
+              id: '2-2-3-0',
+              name: '4级 2-2-3-0',
+              url:'javascript:;'
+            }]
+          }]
+        }]
+      },{
+        id: '3',
+        name: '一级 3',
+        active: false,
+        icon: 'icon-wutu',
+        children: [{
+          id: '3-1',
+          name: '二级 3-1',
+          active: false,
+          children: [{
+            id: '3-1-1',
+            name: '三级 3-1-1',
+            url:'javascript:;'
+          },{
+            id: '3-1-2',
+            name: '三级 3-1-2',
             url:'javascript:;'
           }]
         }]
@@ -120,23 +122,11 @@ export default {
           name: '已签收',
         },
       ],
-      selectValue: '',
-      options: [
-        {value: '1111111'},
-        {value: '2222222'},
-        {value: '1111111'},
-        {value: '2222222'},
-        {value: '1111111'},
-        {value: '2222222'},
-      ]
     }
   },
-  // created() {
-  //   this.checkAlled = false
-  //   this.checkArr.forEach((d, i) => {
-    //     d.checked = false
-  //   })
-  // },
+  created() {
+    this.menuSelectNode(this.menus);//刷新页面选中的菜单保持选中状态
+  },
   methods: {
     //单选/复选按钮
     getCheckArr(val){
@@ -152,11 +142,6 @@ export default {
       this.checkValues = val;
       console.log('单选/复选按钮 选中的值: '+val)
     },
-    //选择器 选中的值
-    getSelectValue(val) {
-      this.selectValue = val;
-      console.log('选择器 选中的值: '+val)
-    },
     //菜单组件 是否展开
     getStatus(val) {
       this.status = val
@@ -171,6 +156,11 @@ export default {
     getSelectId(val) {
       this.selectId = val
       console.log('选中的ID： '+ val)
+    },
+    //获取页面权限
+    getPageConfig(val) {
+      this.pageConfig = val
+      console.log('获取页面权限： '+ JSON.stringify(val))
     },
     //图片组件获取当前index
     getIndex(val) {
@@ -190,6 +180,9 @@ ul, li{
   margin: 0;
   padding: 0;
   list-style: none;
+}
+h3{
+  margin-top: 40px;
 }
 .sp-menu-content{
   width: 300px;
