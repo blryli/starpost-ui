@@ -1,6 +1,6 @@
 <template>
   <ul :class="{ 'sp-menu-small': !menuStatus }">
-    <li class="sp-menu" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
+    <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
       <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.id}]" @click="clickMenu(menu)" 
       :style="{'padding-left': pdleft(menu),'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
@@ -16,7 +16,7 @@
         <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.active" @select-id="getSelectId" @page-config="getPageConfig"
+        <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"
           :menus="menu.children" 
           :backgroundColor="backgroundColor" 
           :hoverBgColor="hoverBgColor" 
@@ -104,15 +104,17 @@ export default {
       },
       //menu收缩展开
       clickMenu(menu) {
-        if(menu.children && this.menuStatus){
-          menu.active = !menu.active;
-          if(this.accordion) {//手风琴
-            let l = this.menus.length;
-            for (let i = 0; i < l; i++) {
-              if(menu.active) {
-                if(this.menus[i].id != menu.id) {
-                  this.menus[i].active = false;
-                  menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+        if(menu.children){
+          if( this.menuStatus) {
+            menu.active = !menu.active;
+            if(this.accordion) {//手风琴
+              let l = this.menus.length;
+              for (let i = 0; i < l; i++) {
+                if(menu.active) {
+                  if(this.menus[i].id != menu.id) {
+                    this.menus[i].active = false;
+                    menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+                  }
                 }
               }
             }
@@ -214,7 +216,9 @@ export default {
         left: 10px;
         width: auto;
         padding: 0 10px;
+        margin: 0 4px;
         background-color: #2e323e;
+        position: relative;
         &:before{
           content: '';
           position: absolute;
