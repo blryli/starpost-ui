@@ -2,7 +2,7 @@
   <div id="app">
     <h1>starpost-ui</h1>
     <h3>Img 图片详情</h3>
-    <sp-img-details :urlArr="imgs" @get-index="getIndex"><span slot="header">我是头</span><span slot="footer">我是尾</span></sp-img-details>
+    <sp-img :urlArr="imgs" @get-index="getIndex"><span slot="header">我是头</span><span slot="footer">我是尾</span></sp-img>
     <h3>Checkbox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
     <div v-for="(item, index) in checkArr" :key="index">
@@ -96,9 +96,9 @@ export default {
         // ''
         // 'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
         // 'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', text: 11111111111},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', text: 22222222222},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', text: 33333333333}
+        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
+        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
+        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
       ],
       imgs2: [],
       checkAlled: false,

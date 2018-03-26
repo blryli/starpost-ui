@@ -1,4 +1,4 @@
-import SpImgDetails from './sp-img/sp-img-details.vue'
+import SpImg from './sp-img/sp-img.vue'
 import SpMenu from './sp-menu/sp-menu.vue'
 import SpMenuGroup from './sp-menu/sp-menu-group.vue'
 import SpCheckbox from './sp-checkbox/sp-checkbox.vue'
@@ -8,7 +8,7 @@ import SpCollapseTransition from './sp-collapse-transition.js'
 
 const starpost = {
 	install (Vue, options) {
-		Vue.component( SpImgDetails.name, SpImgDetails )
+		Vue.component( SpImg.name, SpImg )
         Vue.component( SpMenu.name, SpMenu )
         Vue.component( SpMenuGroup.name, SpMenuGroup )
         Vue.component( SpCheckbox.name, SpCheckbox )
@@ -31,19 +31,21 @@ const starpost = {
 			}else{
 				return false;
 			}
-		}
+        }
+        //激活菜单展开  高亮
         Vue.prototype.menuSelectNode = function(data) {
-            if(!this.selectId && !sessionStorage.selectId && !data) return;
-            this.selectId = sessionStorage.selectId
-            let activeArr = sessionStorage.selectId.split('-'),
-              this_menu;
-            for (let i = 0; i < activeArr.length - 1; i++) {
-                if(this_menu){
-                    this_menu.children[activeArr[i] - 1].active = true;
-                    this_menu = this_menu.children[activeArr[i] - 1];
-                }else{
-                    data[activeArr[i] - 1].active = true
-                    this_menu = data[activeArr[i] - 1];
+            if(this.selectId && sessionStorage.selectId && data) {
+                this.selectId = sessionStorage.selectId
+                let activeArr = sessionStorage.selectId.split('-'),
+                  this_menu;
+                for (let i = 0; i < activeArr.length - 1; i++) {
+                    if(this_menu){
+                        this_menu.children[activeArr[i] - 1].active = true;
+                        this_menu = this_menu.children[activeArr[i] - 1];
+                    }else{
+                        data[activeArr[i] - 1].active = true
+                        this_menu = data[activeArr[i] - 1];
+                    }
                 }
             }
 		}
