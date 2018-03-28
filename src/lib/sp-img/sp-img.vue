@@ -84,7 +84,6 @@ export default {
       isObject() {//数组内容是对象还是字符串
         let isObject;
         if(this.urlArr.length > 0) {
-          console.log(typeof this.urlArr[0] == 'object')
           if(typeof this.urlArr[0] == 'object'){
             isObject = true;
           }
@@ -118,12 +117,11 @@ export default {
       //图片组件获取当前index
       getShowImgIndex(val) {
         this.showImgIndex = val;
-        console.log('图片组件获取当前index: '+val)
+        this.$emit('get-index', val);
       },
       //图片组件获取当前激活图片url
       getUrlSrc(val) {
         this.urlSrc = val;
-        console.log('图片组件获取当前激活图片url: '+val)
       },
     }
 }
