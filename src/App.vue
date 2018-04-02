@@ -2,20 +2,28 @@
   <div id="app">
     <h1>starpost-ui</h1>
     <h3>Img 图片详情</h3>
-    <sp-img :urlArr="imgs" @get-index="getIndex"><span slot="header">我是头</span><span slot="footer">我是尾</span></sp-img>
+    <sp-img :urlArr="urlArr" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
+    <sp-img :urlArr="urlArr1" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
+    <sp-dialog :title="title" :visible.sync="visible">
+      <sp-img-content :urlArr="spImgArr" :activeIndex="activeIndex" @active-index="getActiveIndex"></sp-img-content>
+    </sp-dialog>
+
+    <h3>menu 左侧菜单</h3>
+    <div class="sp-menu-content">
+      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
+        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose"/>
+      </sp-menu-group>
+    </div>
+
     <h3>Checkbox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
     <div v-for="(item, index) in checkArr" :key="index">
       <sp-checkbox v-model.lazy="item.checked" :checkedArr="checkArr" :checkAlled="checkAlled" @change="getCheckAlled">选项{{index}}</sp-checkbox>
     </div>
+
     <h3>Checkbox 单选/复选按钮</h3>
     <sp-checkbox-button :checkList="checkList" :checkValues="checkValues" @callback="getSaskStatus">状态</sp-checkbox-button>
-    <h3>menu 左侧菜单</h3>
-    <div class="sp-menu-content">
-      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
-        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" />
-      </sp-menu-group>
-    </div>
+    
   </div>
 </template>
 
@@ -92,13 +100,18 @@ export default {
         }]
       }],
       name: '12',
-      imgs: [
-        // ''
-        // 'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
+      visible: false,
+      title: '',
+      spImgArr: [],
+      activeIndex: null,//当前展示图片的index
+      urlArr: [
+        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: '标题1'},
+        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: '标题2'},
+        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: '标题3'}
+      ],
+      urlArr1: [
+        'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
         // 'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
       ],
       imgs2: [],
       checkAlled: false,
@@ -128,6 +141,18 @@ export default {
     this.menuSelectNode(this.menus);//刷新页面选中的菜单保持选中状态
   },
   methods: {
+    getUrlArr(val) {
+      this.visible = true;
+      this.spImgArr != val && (this.spImgArr = val);
+    },
+    //图片组件获取当前index
+    getActiveIndex(index) {
+      this.activeIndex = index;
+      this.$nextTick(function() {
+        this.title = this.spImgArr.length > 0 && this.spImgArr[index].title ? this.spImgArr[index].title : '标题';
+      })
+      console.log('图片组件获取当前index: '+ index)
+    },
     //单选/复选按钮
     getCheckArr(val){
         this.checkArr = val
@@ -147,6 +172,12 @@ export default {
       this.status = val
       console.log('菜单组件 是否展开: '+val)
     },
+    menuOpen(val) {
+      console.log('菜单组件 打开的ID: '+val)
+    },
+    menuClose(val) {
+      console.log('菜单组件 关闭的ID: '+val)
+    },
     //菜单组件 是否展开
     getStatus(val) {
       this.status = val
@@ -162,15 +193,17 @@ export default {
       this.pageConfig = val
       console.log('获取页面权限： '+ JSON.stringify(val))
     },
-    //图片组件获取当前index
-    getIndex(val) {
-      console.log('图片组件获取当前index: '+val)
-    }
   }
 }
 </script>
 
 <style lang="scss">
+html{box-sizing: border-box;}
+*,*::before,*::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
 #app{
   font-size: 14px;
   width: 400px;
@@ -183,6 +216,7 @@ ul, li{
 }
 h3{
   margin-top: 40px;
+  margin-bottom: 20px;
 }
 .sp-menu-content{
   width: 300px;

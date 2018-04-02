@@ -49,13 +49,14 @@ export default {
     &:after{
       content: '';
       display: block;
-      width: 24px;  
-      height: 3px;  
-      border-top: 3px solid #888;  
-      border-bottom: 3px solid #888;  
-      background-color: #888;  
-      padding: 4px 0;  
+      width: 24px;
+      height: 3px;
+      border-top: 3px solid #888;
+      border-bottom: 3px solid #888;
+      background-color: #888;
+      padding: 4px 0;
       background-clip:content-box;
+      box-sizing:content-box;
     }
   }
 </style>

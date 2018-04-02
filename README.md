@@ -30,13 +30,50 @@ Vue.use(starpostUI)
 
 
 
-## 【相册】组件配置
+## dialog 组件
 
 ```html
-<sp-img-details
-	:url-arr="array"
-	:show-one="true">
-</sp-img-details>
+<sp-dialog :title="title" :visible.sync="visible"></sp-dialog>
+```
+
+```js
+<script>
+export default {
+  data () {
+    return {
+      visible: false,
+      title: ''
+    }
+  }
+}
+</script>
+```
+
+
+### Attribute
+
+|    name    |    Description   |   type   |default|
+| -----------------  | ---------------- | :--------: | :----------: |
+| title       | 标题 |String| ''
+| visible        | 是否打开 | Boolean| false
+| width        | 弹窗宽度 | String| --
+| top        | 顶部距离 | String| '15vh'
+| footer        | 弹窗底部是否显示 |Boolean | false
+| scrollbar        | 是否允许浏览器出现滚动条 |Boolean | false
+| shadeClose        | 是否点击遮罩关闭 |Boolean | false
+
+### Events
+
+|  事件名 |    说明           |   参数      |
+|-------- |------             |------       |
+|open|打开时触发|--|
+|close|关闭时触发|--|
+
+
+## img 组件内容
+
+```html
+<sp-img-content :urlArr="urlArr" :activeIndex="activeIndex" @active-index="getActiveIndex"/>
 ```
 
 ```js
@@ -45,11 +82,60 @@ export default {
   data () {
     return {
       array: [ 
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', text: 11111111111},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', text: 22222222222},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', text: 33333333333}
+        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
+        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
+        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
       ],
-      //或者
+      //or或者
+      array: [ 
+        'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200',
+        'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
+        'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
+      ]
+      activeIndex: null
+    }
+  }
+}
+</script>
+```
+
+
+### Attribute
+
+|    name    |    Description   |   type   |default|
+| -----------------  | ---------------- | :--------: | :----------: |
+| urlArr       | 图片数组 |Array| []
+| smallImgShow        | 是否展示缩略图 | Boolean| true
+| imgSize        | 缩略图图大小 | Array| [30, 30]
+| defaultColor        | 弹窗缩略图边框颜色 | String| '#15A6BB'
+| cutBoxShow        | 是否开启左右切换箭头 | Boolean| 'mouseenter'(可选'click')
+| switchEvent        | 缩略图切换大图方式 |Boolean | false
+| activeIndex        | 当前展示图片的index |Number | 0
+
+### Events
+
+|  事件名 |    说明           |   参数      |
+|-------- |------             |------       |
+|active-index|打开/切换时触发|index|
+
+
+## img 组件
+
+```html
+<sp-img :url-arr="array" />
+```
+
+```js
+<script>
+export default {
+  data () {
+    return {
+      array: [ 
+        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
+        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
+        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
+      ],
+      //or或者
       array: [ 
         'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200',
         'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
@@ -70,19 +156,13 @@ export default {
 | showOne        | 只展示第一张图片 |Boolean | false
 | alignRow        | 横排展示 |Boolean | true
 | imgSize        | 展示图片大小 |Array | [30, 30]
-| imgBoxSize        | 弹窗大小 |Array | [600, 500]
-| defaultColor        | 激活图片边框颜色 |String | #15A6BB
-| cutBoxShow        | 是否开启左右切换箭头 |Boolean | true
-| smallImgShow        | 弹窗内是否展示缩略图 |Boolean | true
-| cutClick        | 是否切换点击缩略图查看大图 |Boolean | false
-| scrollbar        | 是否允许浏览器出现滚动条 |Boolean | true
-| shadeClose        | 是否点击遮罩关闭 |Boolean | false
 
 ### Events
 
 |  事件名 |    说明           |   参数      |
 |-------- |------             |------       |
-|get-index|图片打开/切换时触发|index值(当前index)|
+|active-index|图片打开/切换时触发|index值(当前index)|
+|get-urlArr|图片打开/切换时触发|获取图片数组urlArr|
 
 
 

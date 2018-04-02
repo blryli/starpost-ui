@@ -16,7 +16,7 @@
         <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"
+        <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
           :menus="menu.children" 
           :backgroundColor="backgroundColor" 
           :hoverBgColor="hoverBgColor" 
@@ -107,12 +107,16 @@ export default {
         if(menu.children){
           if( this.menuStatus) {
             menu.active = !menu.active;
+            menu.active ? this.$emit('open', menu.id) : this.$emit('close', menu.id);
             if(this.accordion) {//手风琴
               let l = this.menus.length;
               for (let i = 0; i < l; i++) {
                 if(menu.active) {
                   if(this.menus[i].id != menu.id) {
-                    this.menus[i].active = false;
+                    if(this.menus[i].active) {
+                      this.menus[i].active = false;
+                      this.$emit('close', this.menus[i].id);
+                    }
                     menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
                   }
                 }
@@ -125,21 +129,22 @@ export default {
           this.pagePermissions && this.$emit('page-config', config);
           sessionStorage.selectId = menu.id;
           sessionStorage.configs = JSON.stringify(config);
-          if(this.accordion) {//手风琴
-            let l = this.menus.length;
-            for (let i = 0; i < l; i++) {
-              if(this.menus[i].id != menu.id) {
-                this.menus[i].active = false;
-                menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
-              }
-            }
-          }
+          // if(this.accordion) {//手风琴
+          //   let l = this.menus.length;
+          //   for (let i = 0; i < l; i++) {
+          //     if(this.menus[i].id != menu.id) {
+          //       this.menus[i].active = false;
+          //       menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+          //     }
+          //   }
+          // }
         }
       },
       //开启router下 刷新页面保持菜单激活状态
       navClose(array) {
         for (let i = 0; i < array.length; i++) {
           let arr = array[i].children;
+          if(this.accordion) {}
           if(array[i].active == true) {
             array[i].active = false 
           }
@@ -154,6 +159,12 @@ export default {
       zIndex(menu) {
         let l = menu.id.split('-').length;
         return 1000 - l*2;
+      },
+      menuOpen(val) {
+        this.$emit('open', val)
+      },
+      menuClose(val) {
+        this.$emit('close', val);
       },
       //选中的ID
       getSelectId(val) {

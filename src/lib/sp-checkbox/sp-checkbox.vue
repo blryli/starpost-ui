@@ -76,7 +76,6 @@
 
 <style lang="scss" scoped>
 @import '../../../static/icon-font/iconfont.css';
-@import '../../scss/variable';
 
 .icheckbox_square-green, .iradio_square-green {
     display: inline-block;
@@ -87,11 +86,11 @@
     border: 1px solid #aaa;
     border-radius: 2px;
     &:hover{
-        border-color: $bgColor;
+        border-color: #15A6BB;
     }
     &.active{
-        border-color: $bgColor;
-        background-color: $bgColor;
+        border-color: #15A6BB;
+        background-color: #15A6BB;
     }
     .check{
         position: absolute;z-index: 10; opacity: 0;top: 0%; left: 0%;cursor: pointer;margin-top: 0;

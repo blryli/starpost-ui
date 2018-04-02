@@ -2,11 +2,10 @@
 	<div>
 		<slot></slot>
         <ul class="checkbox">
-        	<li :class="{'active': isCheck}" style="margin-right:-4.7px;z-index: 3;" v-if="checkAllShow == true" :style="{padding: checkSize(checkboxSize)}">
+        	<li :class="{'active': isCheck}" style="z-index: 3;" v-if="checkAllShow == true" :style="{padding: checkSize(checkboxSize)}" @click="checkAll()">
         		<i></i>
-        		<span role="button" @click="checkAll()">全选</span>
-        	</li>
-        	<li v-for="item in checkList" :key="item.id" :style="{padding: checkSize(checkboxSize)}" :class="{'active': contains(checkarr, item.id) && isCheck == false}"  @click="check(item.id)">
+        		<span role="button">全选</span>
+        	</li><li v-for="item in checkList" :key="item.id" :style="{padding: checkSize(checkboxSize)}" :class="{'active': contains(checkarr, item.id) && isCheck == false}"  @click="check(item.id)">
         		<i></i>
         		<span role="button">{{item.name}}</span>
         	</li>
@@ -107,7 +106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../scss/variable';
 .checkbox{
     padding: 0;
     margin: 0;
@@ -124,8 +122,8 @@ export default {
         i{
         	width: 100%;
         	height: 100%;
-        	background-color: $bgColor;
-        	border-color: $bdColor;
+        	background-color: #15A6BB;
+        	border-color: rgb(16, 152, 173);
         	opacity: 0;
         	position: absolute;
         	z-index: 0;
@@ -146,8 +144,8 @@ export default {
             }
         }
         &.active{
-            background-color: $bgColor;
-            border-color: $bdColor;
+            background-color: #15A6BB;
+            border-color: rgb(16, 152, 173);
             span{
                 color: #fff;
             }
@@ -157,7 +155,7 @@ export default {
             border-radius: 4px 0 0 4px;
             border-left: 1px solid #ccc;
             &.active{
-            	border-color: $bgColor;
+            	border-color: #15A6BB;
             }
         }
         &:last-child{
