@@ -30,10 +30,15 @@ Vue.use(starpostUI)
 
 
 
-## dialog 组件
+## sp-img 组件
 
 ```html
-<sp-dialog :title="title" :visible.sync="visible"></sp-dialog>
+<sp-img :urlArr="urlArr" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
+
+<sp-img :urlArr="urlArr1" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
+<sp-dialog :title="title" :visible.sync="visible">
+  <sp-img-content :urlArr="spImgArr" :activeIndex="activeIndex" @active-index="getActiveIndex"></sp-img-content>
+</sp-dialog>
 ```
 
 ```js
@@ -42,7 +47,44 @@ export default {
   data () {
     return {
       visible: false,
-      title: ''
+      title: "",
+      spImgArr: [],
+      activeIndex: null, //当前展示图片的index
+      urlArr: [
+        {
+          src: "http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200",
+          title: "标题1"
+        },
+        {
+          src: "http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200",
+          title: "标题2"
+        },
+        {
+          src: "http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200",
+          title: "标题3"
+        }
+      ],
+      urlArr1: [
+        "http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200"
+        // 'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
+      ],
+    }
+  },
+  methods: {
+    getUrlArr(val) {
+      this.visible = true;
+      this.spImgArr != val && (this.spImgArr = val);
+    },
+    //图片组件获取当前index
+    getActiveIndex(index) {
+      this.activeIndex = index;
+      this.$nextTick(function() {
+        this.title =
+          this.spImgArr.length > 0 && this.spImgArr[index].title
+            ? this.spImgArr[index].title
+            : "标题";
+      });
+      console.log("图片组件获取当前index: " + index);
     }
   }
 }
@@ -50,7 +92,7 @@ export default {
 ```
 
 
-### Attribute
+### sp-dialo gAttribute
 
 |    name    |    Description   |   type   |default|
 | -----------------  | ---------------- | :--------: | :----------: |
@@ -62,45 +104,30 @@ export default {
 | scrollbar        | 是否允许浏览器出现滚动条 |Boolean | false
 | shadeClose        | 是否点击遮罩关闭 |Boolean | false
 
-### Events
+### sp-dialo Events
 
 |  事件名 |    说明           |   参数      |
 |-------- |------             |------       |
 |open|打开时触发|--|
 |close|关闭时触发|--|
 
+### sp-img Attribute
 
-## img 组件内容
+|    name    |    Description   |   type   |default|
+| -----------------  | ---------------- | :--------: | :----------: |
+| urlArr       | 图片地址 |Array| []
+| showOne        | 只展示第一张图片 |Boolean | false
+| alignRow        | 横排展示 |Boolean | true
+| imgSize        | 展示图片大小 |Array | [30, 30]
 
-```html
-<sp-img-content :urlArr="urlArr" :activeIndex="activeIndex" @active-index="getActiveIndex"/>
-```
+### sp-img Events
 
-```js
-<script>
-export default {
-  data () {
-    return {
-      array: [ 
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
-      ],
-      //or或者
-      array: [ 
-        'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200',
-        'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
-        'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
-      ]
-      activeIndex: null
-    }
-  }
-}
-</script>
-```
+|  事件名 |    说明           |   参数      |
+|-------- |------             |------       |
+|active-index|图片打开/切换时触发|index值(当前index)|
+|get-urlArr|图片打开/切换时触发|获取图片数组urlArr|
 
-
-### Attribute
+### sp-img-content Attribute
 
 |    name    |    Description   |   type   |default|
 | -----------------  | ---------------- | :--------: | :----------: |
@@ -112,57 +139,12 @@ export default {
 | switchEvent        | 缩略图切换大图方式 |Boolean | false
 | activeIndex        | 当前展示图片的index |Number | 0
 
-### Events
+### sp-img-content Events
 
 |  事件名 |    说明           |   参数      |
 |-------- |------             |------       |
 |active-index|打开/切换时触发|index|
 
-
-## img 组件
-
-```html
-<sp-img :url-arr="array" />
-```
-
-```js
-<script>
-export default {
-  data () {
-    return {
-      array: [ 
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: 11111111111},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: 22222222222},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: 33333333333}
-      ],
-      //or或者
-      array: [ 
-        'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200',
-        'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
-        'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
-      ]
-    }
-  }
-}
-</script>
-```
-
-
-### Attribute
-
-|    name    |    Description   |   type   |default|
-| -----------------  | ---------------- | :--------: | :----------: |
-| urlArr       | 图片地址 |Array| []
-| showOne        | 只展示第一张图片 |Boolean | false
-| alignRow        | 横排展示 |Boolean | true
-| imgSize        | 展示图片大小 |Array | [30, 30]
-
-### Events
-
-|  事件名 |    说明           |   参数      |
-|-------- |------             |------       |
-|active-index|图片打开/切换时触发|index值(当前index)|
-|get-urlArr|图片打开/切换时触发|获取图片数组urlArr|
 
 
 
@@ -340,6 +322,7 @@ export default {
     return {
       status: true,
       selectId: '1',
+      pageConfig: [],
       menus: [{
         id: '1',
         name: '一级 1',
@@ -384,7 +367,18 @@ export default {
     getSelectId(val) {
       this.selectId = val
       console.log('选中的ID： '+ val)
-    }
+    },
+    //获取页面权限
+    getPageConfig(val) {
+      this.pageConfig = val;
+      console.log("获取页面权限： " + JSON.stringify(val));
+    },
+    menuOpen(val) {
+      console.log("菜单组件 打开的ID: " + val);
+    },
+    menuClose(val) {
+      console.log("菜单组件 关闭的ID: " + val);
+    },
   }
 }
 </script>
@@ -405,3 +399,13 @@ export default {
 | menuStatus  | 菜单是否默认展开 | Boolean | true
 | router  | 是否使用router | Boolean | false
 | selectId  | 选中的ID | String | ''
+| pagePermissions  | 是否开启页面权限功能 | Boolean | false
+
+### Events
+
+|  事件名 |    说明           |   参数      |
+|-------- |------             |------       |
+|select-id|选中的ID|--|
+|page-config|获取页面权限配置|--|
+|open|打开的ID|--|
+|close|关闭的ID|--|

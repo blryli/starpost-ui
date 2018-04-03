@@ -11,7 +11,7 @@
     <h3>menu 左侧菜单</h3>
     <div class="sp-menu-content">
       <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
-        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose"/>
+        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
       </sp-menu-group>
     </div>
 
@@ -23,94 +23,123 @@
 
     <h3>Checkbox 单选/复选按钮</h3>
     <sp-checkbox-button :checkList="checkList" :checkValues="checkValues" @callback="getSaskStatus">状态</sp-checkbox-button>
-    
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
       status: true,
-      selectId: '1',
+      selectId: "1",
       pageConfig: [],
-      menus: [{
-        id: '1',
-        name: '一级 1',
-        icon: 'icon-wutu',
-        url:'javascript:;',
-        configs: ['aaa', 'bbb', 'ccc']
-      },{
-        id: '2',
-        name: '一级 2',
-        active: false,
-        icon: 'icon-wutu',
-        children: [{
-          id: '2-1',
-          name: '二级 2-1',
-          url:'javascript:;',
-          configs: ['aaa', 'ccc']
-        },{
-          id: '2-2',
-          name: '二级 2-2',
+      menus: [
+        {
+          id: "1",
+          name: "一级 1",
+          icon: "icon-wutu",
+          url: "javascript:;",
+          configs: ["aaa", "bbb", "ccc"]
+        },
+        {
+          id: "2",
+          name: "一级 2",
           active: false,
-          children: [{
-            id: '2-2-1',
-            name: '三级 2-2-1',
-            url:'javascript:;'
-          },{
-            id: '2-2-2',
-            name: '三级 2-2-2',
-            active: false,
-            children: [{
-              id: '2-2-2-1',
-              name: '4级 2-2-2-1',
-              url:'javascript:;'
-            }]
-          },{
-            id: '2-2-3',
-            name: '三级 2-2-3',
-            active: false,
-            children: [{
-              id: '2-2-3-0',
-              name: '4级 2-2-3-0',
-              url:'javascript:;'
-            }]
-          }]
-        }]
-      },{
-        id: '3',
-        name: '一级 3',
-        active: false,
-        icon: 'icon-wutu',
-        children: [{
-          id: '3-1',
-          name: '二级 3-1',
+          icon: "icon-wutu",
+          children: [
+            {
+              id: "2-1",
+              name: "二级 2-1",
+              url: "javascript:;",
+              configs: ["aaa", "ccc"]
+            },
+            {
+              id: "2-2",
+              name: "二级 2-2",
+              active: false,
+              children: [
+                {
+                  id: "2-2-1",
+                  name: "三级 2-2-1",
+                  url: "javascript:;"
+                },
+                {
+                  id: "2-2-2",
+                  name: "三级 2-2-2",
+                  active: false,
+                  children: [
+                    {
+                      id: "2-2-2-1",
+                      name: "4级 2-2-2-1",
+                      url: "javascript:;"
+                    }
+                  ]
+                },
+                {
+                  id: "2-2-3",
+                  name: "三级 2-2-3",
+                  active: false,
+                  children: [
+                    {
+                      id: "2-2-3-0",
+                      name: "4级 2-2-3-0",
+                      url: "javascript:;"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: "3",
+          name: "一级 3",
           active: false,
-          children: [{
-            id: '3-1-1',
-            name: '三级 3-1-1',
-            url:'javascript:;'
-          },{
-            id: '3-1-2',
-            name: '三级 3-1-2',
-            url:'javascript:;'
-          }]
-        }]
-      }],
-      name: '12',
+          icon: "icon-wutu",
+          children: [
+            {
+              id: "3-1",
+              name: "二级 3-1",
+              active: false,
+              children: [
+                {
+                  id: "3-1-1",
+                  name: "三级 3-1-1",
+                  url: "javascript:;"
+                },
+                {
+                  id: "3-1-2",
+                  name: "三级 3-1-2",
+                  url: "javascript:;"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      name: "12",
       visible: false,
-      title: '',
+      title: "",
       spImgArr: [],
-      activeIndex: null,//当前展示图片的index
+      activeIndex: null, //当前展示图片的index
       urlArr: [
-        {src:'http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200', title: '标题1'},
-        {src:'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200', title: '标题2'},
-        {src:'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200', title: '标题3'}
+        {
+          src: "http://pic2.97uimg.com/58pic/19/69/83/38658PICuUm.jpg!w1200",
+          title: "标题1"
+        },
+        {
+          src: "http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200",
+          title: "标题2"
+        },
+        {
+          src: "http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200",
+          title: "标题3"
+        }
       ],
       urlArr1: [
-        'http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200',
+        "http://pic2.97uimg.com/58pic/21/56/66/15D58PICHdR.jpg!w1200"
         // 'http://pic2.97uimg.com/58pic/18/23/47/56r58PICHN3.jpg!w1200'
       ],
       imgs2: [],
@@ -122,23 +151,25 @@ export default {
         { checked: false },
         { checked: false }
       ],
-      checkValues: ['01'],
+      checkValues: ["01"],
       checkList: [
         {
-          id: '01',
-          name: '已付款',
-        },{
-          id: '02',
-          name: '已发货',
-        },{
-          id: '03',
-          name: '已签收',
+          id: "01",
+          name: "已付款"
         },
-      ],
-    }
+        {
+          id: "02",
+          name: "已发货"
+        },
+        {
+          id: "03",
+          name: "已签收"
+        }
+      ]
+    };
   },
   created() {
-    this.menuSelectNode(this.menus);//刷新页面选中的菜单保持选中状态
+    this.menuSelectNode(this.menus); //刷新页面选中的菜单保持选中状态
   },
   methods: {
     getUrlArr(val) {
@@ -149,82 +180,90 @@ export default {
     getActiveIndex(index) {
       this.activeIndex = index;
       this.$nextTick(function() {
-        this.title = this.spImgArr.length > 0 && this.spImgArr[index].title ? this.spImgArr[index].title : '标题';
-      })
-      console.log('图片组件获取当前index: '+ index)
+        this.title =
+          this.spImgArr.length > 0 && this.spImgArr[index].title
+            ? this.spImgArr[index].title
+            : "标题";
+      });
+      console.log("图片组件获取当前index: " + index);
     },
     //单选/复选按钮
-    getCheckArr(val){
-        this.checkArr = val
-        console.log('按钮数组:'+ JSON.stringify(this.checkArr))
+    getCheckArr(val) {
+      this.checkArr = val;
+      console.log("按钮数组:" + JSON.stringify(this.checkArr));
     },
     getCheckAlled(val) {
-        this.checkAlled = val
-        console.log('按钮数组:'+ JSON.stringify(this.checkArr))
+      this.checkAlled = val;
+      console.log("按钮数组:" + JSON.stringify(this.checkArr));
     },
     //单选/复选框
     getSaskStatus(val) {
       this.checkValues = val;
-      console.log('单选/复选按钮 选中的值: '+val)
+      console.log("单选/复选按钮 选中的值: " + val);
     },
     //菜单组件 是否展开
     getStatus(val) {
-      this.status = val
-      console.log('菜单组件 是否展开: '+val)
+      this.status = val;
+      console.log("菜单组件 是否展开: " + val);
+    },
+    //菜单组件 是否展开
+    getStatus(val) {
+      this.status = val;
+      console.log("菜单组件 是否展开: " + val);
     },
     menuOpen(val) {
-      console.log('菜单组件 打开的ID: '+val)
+      console.log("菜单组件 打开的ID: " + val);
     },
     menuClose(val) {
-      console.log('菜单组件 关闭的ID: '+val)
-    },
-    //菜单组件 是否展开
-    getStatus(val) {
-      this.status = val
-      console.log('菜单组件 是否展开: '+val)
+      console.log("菜单组件 关闭的ID: " + val);
     },
     //菜单选中的ID
     getSelectId(val) {
-      this.selectId = val
-      console.log('选中的ID： '+ val)
+      this.selectId = val;
+      console.log("选中的ID： " + val);
     },
     //获取页面权限
     getPageConfig(val) {
-      this.pageConfig = val
-      console.log('获取页面权限： '+ JSON.stringify(val))
-    },
+      this.pageConfig = val;
+      console.log("获取页面权限： " + JSON.stringify(val));
+    }
   }
-}
+};
 </script>
 
 <style lang="scss">
-html{box-sizing: border-box;}
-*,*::before,*::after{
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
 }
-#app{
+#app {
   font-size: 14px;
   width: 400px;
   margin: 0 auto;
 }
-ul, li{
+ul,
+li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-h3{
+h3 {
   margin-top: 40px;
   margin-bottom: 20px;
 }
-.sp-menu-content{
+.sp-menu-content {
   width: 300px;
   border: 1px solid #ddd;
   padding: 20px;
   margin: 0 auto;
 }
-.sp-select-box{
+.sp-select-box {
   margin: 0 auto;
   padding: 20px;
 }
