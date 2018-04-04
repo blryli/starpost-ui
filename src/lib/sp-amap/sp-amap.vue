@@ -1,5 +1,5 @@
 <template>
-  <div class="sp-amap">
+  <div class="sp-amap" :style="style">
     <el-amap ref="map" vid="amapDemo" :center="center" :zoom="zoom" :plugin="plugin" :events="events">
       <el-amap-marker v-for="(marker, index) in markers" :position="marker.position" :title="marker.address" :events="marker.events" :visible="marker.visible" raise-on-drag="true" :draggable="marker.draggable" :vid="index" :key="index"></el-amap-marker>
     </el-amap>
@@ -19,9 +19,12 @@ export default {
     width: String,
     height: String
   },
-  watch: {
-    width(val) {
-      document.getElementById("sp-amap").style.width = this.width;
+  computed: {
+    style() {
+      let style = {};
+      this.width && (style.width = this.width);
+      this.height && (style.height = this.height);
+      return style;
     }
   },
   data() {
@@ -101,7 +104,6 @@ export default {
       }
     ];
   },
-  computed: {},
   methods: {
     //获取经纬度和具体地址
     getGeocoder(lnglat) {

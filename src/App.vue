@@ -15,8 +15,8 @@
       </sp-menu-group>
     </div>
 
-    <h3>Img 图片详情</h3>
-    <sp-amap id="sp-amap" :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
+    <h3>sp-amap</h3>
+    <sp-amap :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
 
     <h3>Checkbox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
