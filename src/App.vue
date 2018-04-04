@@ -15,6 +15,9 @@
       </sp-menu-group>
     </div>
 
+    <h3>Img 图片详情</h3>
+    <sp-amap id="sp-amap" :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
+
     <h3>Checkbox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
     <div v-for="(item, index) in checkArr" :key="index">
@@ -32,6 +35,29 @@ export default {
   name: "app",
   data() {
     return {
+      markers: [
+        {
+          title: "【东莞仓】",
+          position: [113.753228, 22.9833],
+          address: "广东省东莞市南城街道东骏豪苑(东骏路)",
+          name: "blry",
+          phone: "13713262222"
+        },
+        {
+          title: "【龙岗仓】",
+          position: [114.234824, 22.723301],
+          address: "广东省深圳市龙岗区龙城街道宏兴苑",
+          name: "blry",
+          phone: "13713263333"
+        },
+        {
+          title: "【坂田仓】",
+          position: [114.07314, 22.62579],
+          address: "广东省深圳市龙岗区坂田第三工业区二栋一楼",
+          name: "blry",
+          phone: "13713261111"
+        }
+      ],
       status: true,
       selectId: "1",
       pageConfig: [],
@@ -226,7 +252,15 @@ export default {
     getPageConfig(val) {
       this.pageConfig = val;
       console.log("获取页面权限： " + JSON.stringify(val));
-    }
+    },
+    //高德地图返回数据
+    getMapForm(val) {
+      console.log("选择仓库： " + JSON.stringify(val));
+    },
+    //获取经纬度：
+    getGeocoder(val) {
+      console.log("获取经纬度： " + JSON.stringify(val));
+    },
   }
 };
 </script>
