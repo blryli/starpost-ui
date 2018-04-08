@@ -23,10 +23,7 @@ const starpost = {
         Vue.component(SpCheckboxButton.name, SpCheckboxButton)
         Vue.component(SpCheckboxGroup.name, SpCheckboxGroup)
         Vue.component(SpCollapseTransition.name, SpCollapseTransition)
-        // vuePayKeyboard.name 组件的name属性
-        // 类似通过 this.$xxx 方式调用插件的 其实只是挂载到原型上而已
-        // Vue.prototype.$xxx  // 最终可以在任何地方通过 this.$xxx 调用
-        // 虽然没有明确规定用$开头  但是大家都默认遵守这个规定
+        
         VueAMap.initAMapApiLoader({
             key: '67cbf25aaeeb270f65bf66afaa028cb5',
             plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor', 'AMap.Geolocation', 'Geocoder']
@@ -34,15 +31,19 @@ const starpost = {
 
         Vue.use(VueAMap)
 
-        // 定义属性
-        Vue.prototype.$pagePermissions = [];
-
         //定义方法
         Vue.prototype.checkUserName = (value) => {
             if (/^\w{6,11}$/.test(value)) { //匹配6-20位数字字母下划线
                 return true;
             } else {
                 return false;
+            }
+        }
+        //菜单设置ID
+        Vue.prototype.muneSetId = function (menus, id) {
+            for (let i = 0; i < menus.length; i++) {
+                id ? this.$set(menus[i], "id", id + "-" + (i + 1)) : this.$set(menus[i], "id", '' + parseInt(i + 1));
+                menus[i].children && this.muneSetId(menus[i].children, menus[i].id);
             }
         }
         //激活菜单展开  高亮

@@ -63,53 +63,44 @@ export default {
       pageConfig: [],
       menus: [
         {
-          id: "1",
           name: "一级 1",
           icon: "icon-wutu",
           url: "javascript:;",
           configs: ["aaa", "bbb", "ccc"]
         },
         {
-          id: "2",
           name: "一级 2",
           active: false,
           icon: "icon-wutu",
           children: [
             {
-              id: "2-1",
               name: "二级 2-1",
               url: "javascript:;",
               configs: ["aaa", "ccc"]
             },
             {
-              id: "2-2",
               name: "二级 2-2",
               active: false,
               children: [
                 {
-                  id: "2-2-1",
                   name: "三级 2-2-1",
                   url: "javascript:;"
                 },
                 {
-                  id: "2-2-2",
                   name: "三级 2-2-2",
                   active: false,
                   children: [
                     {
-                      id: "2-2-2-1",
                       name: "4级 2-2-2-1",
                       url: "javascript:;"
                     }
                   ]
                 },
                 {
-                  id: "2-2-3",
                   name: "三级 2-2-3",
                   active: false,
                   children: [
                     {
-                      id: "2-2-3-0",
                       name: "4级 2-2-3-0",
                       url: "javascript:;"
                     }
@@ -120,23 +111,19 @@ export default {
           ]
         },
         {
-          id: "3",
           name: "一级 3",
           active: false,
           icon: "icon-wutu",
           children: [
             {
-              id: "3-1",
               name: "二级 3-1",
               active: false,
               children: [
                 {
-                  id: "3-1-1",
                   name: "三级 3-1-1",
                   url: "javascript:;"
                 },
                 {
-                  id: "3-1-2",
                   name: "三级 3-1-2",
                   url: "javascript:;"
                 }
@@ -195,7 +182,8 @@ export default {
     };
   },
   created() {
-    this.menuSelectNode(this.menus); //刷新页面选中的菜单保持选中状态
+    this.muneSetId(this.menus); //菜单设置ID
+    this.menuSelectNode(this.menus); //刷新页面选中的菜单高亮
   },
   methods: {
     getUrlArr(val) {
