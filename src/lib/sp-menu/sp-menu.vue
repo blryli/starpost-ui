@@ -2,16 +2,16 @@
   <ul :class="{ 'sp-menu-small': !menuStatus }">
     <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
       <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.id}]" @click="clickMenu(menu)" 
-      :style="{'padding-left': pdleft(menu),'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
+      :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
         <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
         <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.name }}</span>
         </router-link>
         <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav(menu)}">{{ menu.name }}</span>
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.name }}</span>
         </a>
         <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
       </div>
@@ -28,6 +28,8 @@
           :menuStatus="menuStatus" 
           :router="router" 
           :selectId="selectId" 
+          isUpNav="false" 
+          :paddingLeft="pdleft"
           :pagePermissions="pagePermissions"
         :style="{'width': width, 'z-index': zIndex(menu)}"/>
       </sp-collapse-transition>
@@ -91,17 +93,27 @@ export default {
       selectId: {//选中的ID
         type: String,
         default: ''
+      },
+      isUpNav: {//是否是一级按钮
+        type: Boolean,
+        default: true
+      },
+      paddingLeft: {
+        type: Number,
+        default: 0
       }
     },
     data() {
       return {
       }
     },
-    methods:{
-      //是否是一级按钮
-      isUpNav(menu) {
-        return menu.id.split('-').length == 1
+    computed: {
+      //层级padding-left
+      pdleft() {
+        return this.paddingLeft + 20;
       },
+    },
+    methods:{
       //menu收缩展开
       clickMenu(menu) {
         if(menu.children){
@@ -150,11 +162,6 @@ export default {
           }
           arr && this.navClose(arr);
         }
-      },
-      //层级padding-left
-      pdleft(menu) {
-        let l = menu.id.split('-').length;
-        return l*10 + 10 +'px';
       },
       zIndex(menu) {
         let l = menu.id.split('-').length;
