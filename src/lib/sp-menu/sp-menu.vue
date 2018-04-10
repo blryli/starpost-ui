@@ -28,7 +28,7 @@
           :menuStatus="menuStatus" 
           :router="router" 
           :selectId="selectId" 
-          isUpNav="false" 
+          :isUpNav="false" 
           :paddingLeft="pdleft"
           :pagePermissions="pagePermissions"
         :style="{'width': width, 'z-index': zIndex(menu)}"/>
