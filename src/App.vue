@@ -63,45 +63,45 @@ export default {
       pageConfig: [],
       menus: [
         {
-          name: "一级 1",
+          label: "一级 1",
           icon: "icon-wutu",
           url: "javascript:;",
           configs: ["aaa", "bbb", "ccc"]
         },
         {
-          name: "一级 2",
+          label: "一级 2",
           active: false,
           icon: "icon-wutu",
           children: [
             {
-              name: "二级 2-1",
+              label: "二级 2-1",
               url: "javascript:;",
               configs: ["aaa", "ccc"]
             },
             {
-              name: "二级 2-2",
+              label: "二级 2-2",
               active: false,
               children: [
                 {
-                  name: "三级 2-2-1",
+                  label: "三级 2-2-1",
                   url: "javascript:;"
                 },
                 {
-                  name: "三级 2-2-2",
+                  label: "三级 2-2-2",
                   active: false,
                   children: [
                     {
-                      name: "4级 2-2-2-1",
+                      label: "4级 2-2-2-1",
                       url: "javascript:;"
                     }
                   ]
                 },
                 {
-                  name: "三级 2-2-3",
+                  label: "三级 2-2-3",
                   active: false,
                   children: [
                     {
-                      name: "4级 2-2-3-0",
+                      label: "4级 2-2-3-0",
                       url: "javascript:;"
                     }
                   ]
@@ -111,20 +111,20 @@ export default {
           ]
         },
         {
-          name: "一级 3",
+          label: "一级 3",
           active: false,
           icon: "icon-wutu",
           children: [
             {
-              name: "二级 3-1",
+              label: "二级 3-1",
               active: false,
               children: [
                 {
-                  name: "三级 3-1-1",
+                  label: "三级 3-1-1",
                   url: "javascript:;"
                 },
                 {
-                  name: "三级 3-1-2",
+                  label: "三级 3-1-2",
                   url: "javascript:;"
                 }
               ]

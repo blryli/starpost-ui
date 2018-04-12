@@ -7,13 +7,13 @@
         <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
         <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.name }}</span>
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
         </router-link>
         <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.name }}</span>
+          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
         </a>
-        <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.name }}</span>
+        <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.label }}</span>
       </div>
       <sp-collapse-transition>
         <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
