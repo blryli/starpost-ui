@@ -324,31 +324,28 @@ export default {
       selectId: '1',
       pageConfig: [],
       menus: [{
-        id: '1',
-        name: '一级 1',
+        label: '一级 1',
         active: false,
         icon: 'icon-wutu',
         children: [{
-          id: '1-0',
-          name: '二级 1-0',
+          label: '二级 1-0',
           active: false,
-          url:'#'
+          url:'#',
+          children: [//如果使用权限，这样写，有url的children会转成configs数组，不会渲染出来，权限后台tree建议用element tree
+            {'label': '新建'}
+          ]
         },{
-          id: '1-1',
-          name: '二级 1-1',
+          label: '二级 1-1',
           active: false,
           children: [{
-            id: '1-1-1',
-            name: '三级 1-1-1',
+            label: '三级 1-1-1',
             active: false,
             url:'#'
           },{
-            id: '1-1-2',
-            name: '三级 1-1-2',
+            label: '三级 1-1-2',
             active: false,
             children: [{
-              id: '1-1-1-1',
-              name: '4级 1-1-1-1',
+              label: '4级 1-1-1-1',
               active: false,
               url:'#'
             }]

@@ -66,7 +66,7 @@ export default {
           label: "一级 1",
           icon: "icon-wutu",
           url: "javascript:;",
-          configs: ["aaa", "bbb", "ccc"]
+          // children: ["aaa", "bbb", "ccc"]
         },
         {
           label: "一级 2",
@@ -76,7 +76,7 @@ export default {
             {
               label: "二级 2-1",
               url: "javascript:;",
-              configs: ["aaa", "ccc"]
+              children: ["aaa", "ccc"]
             },
             {
               label: "二级 2-2",
@@ -182,8 +182,7 @@ export default {
     };
   },
   created() {
-    this.muneSetId(this.menus); //菜单设置ID
-    this.menuSelectNode(this.menus); //刷新页面选中的菜单高亮
+    this.spMuneInit(this.menus); //菜单设置ID,刷新页面选中的菜单高亮
   },
   methods: {
     getUrlArr(val) {

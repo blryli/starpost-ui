@@ -23,7 +23,7 @@ const starpost = {
         Vue.component(SpCheckboxButton.name, SpCheckboxButton)
         Vue.component(SpCheckboxGroup.name, SpCheckboxGroup)
         Vue.component(SpCollapseTransition.name, SpCollapseTransition)
-        
+
         VueAMap.initAMapApiLoader({
             key: '67cbf25aaeeb270f65bf66afaa028cb5',
             plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor', 'AMap.Geolocation', 'Geocoder']
@@ -39,16 +39,24 @@ const starpost = {
                 return false;
             }
         }
-        //菜单设置ID
-        Vue.prototype.muneSetId = function (menus, id) {
+        
+        Vue.prototype.spMuneSetId = function (menus, id) {
             for (let i = 0; i < menus.length; i++) {
-                id ? this.$set(menus[i], "id", id + "-" + (i + 1)) : this.$set(menus[i], "id", '' + parseInt(i + 1));
-                menus[i].children && this.muneSetId(menus[i].children, menus[i].id);
+                id ? this.$set(menus[i], "uid", id + "-" + (i + 1)) : this.$set(menus[i], "uid", '' + parseInt(i + 1));
+                if (menus[i].url && menus[i].children) {
+                    this.$set(menus[i], "checked", false);
+                    this.$set(menus[i], "configs", menus[i].children);
+                    menus[i].children = [];
+                }
+                menus[i].children && this.spMuneSetId(menus[i].children, menus[i].uid);
             }
         }
-        //激活菜单展开  高亮
-        Vue.prototype.menuSelectNode = function (data) {
-            if (this.selectId && sessionStorage.selectId && data) {
+        //菜单组件初始化
+        Vue.prototype.spMuneInit = function (menus, id) {
+            //菜单设置ID
+            this.spMuneSetId(menus, id);
+            //激活菜单展开  高亮
+            if (this.selectId && sessionStorage.selectId && menus) {
                 this.selectId = sessionStorage.selectId
                 let activeArr = sessionStorage.selectId.split('-'),
                     this_menu;
@@ -57,8 +65,8 @@ const starpost = {
                         this_menu.children[activeArr[i] - 1].active = true;
                         this_menu = this_menu.children[activeArr[i] - 1];
                     } else {
-                        data[activeArr[i] - 1].active = true
-                        this_menu = data[activeArr[i] - 1];
+                        menus[activeArr[i] - 1].active = true
+                        this_menu = menus[activeArr[i] - 1];
                     }
                 }
             }

@@ -1,15 +1,15 @@
 <template>
   <ul :class="{ 'sp-menu-small': !menuStatus }">
-    <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.id" :style="{'background-color': backgroundColor}">
-      <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.id}]" @click="clickMenu(menu)" 
-      :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.id ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
+    <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.uid" :style="{'background-color': backgroundColor}">
+      <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.uid}]" @click="clickMenu(menu)" 
+      :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
         <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
-        <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+        <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
           <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
         </router-link>
-        <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.id ? activeMenuColor[1] : menuColor}">
+        <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor}">
           <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
           <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
         </a>
@@ -116,20 +116,20 @@ export default {
     methods:{
       //menu收缩展开
       clickMenu(menu) {
-        if(menu.children){
+        if(!menu.url){
           if( this.menuStatus) {
             menu.active = !menu.active;
-            menu.active ? this.$emit('open', menu.id) : this.$emit('close', menu.id);
+            menu.active ? this.$emit('open', menu.uid) : this.$emit('close', menu.uid);
             if(this.accordion) {//手风琴
               let l = this.menus.length;
               for (let i = 0; i < l; i++) {
                 if(menu.active) {
-                  if(this.menus[i].id != menu.id) {
+                  if(this.menus[i].uid != menu.uid) {
                     if(this.menus[i].active) {
                       this.menus[i].active = false;
-                      this.$emit('close', this.menus[i].id);
+                      this.$emit('close', this.menus[i].uid);
                     }
-                    menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+                    menu.uid.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
                   }
                 }
               }
@@ -137,16 +137,16 @@ export default {
           }
         }else {
           let config = menu.configs ? menu.configs : [];
-          this.$emit('select-id', menu.id);
+          this.$emit('select-id', menu.uid);
           this.pagePermissions && this.$emit('page-config', config);
-          sessionStorage.selectId = menu.id;
+          sessionStorage.selectId = menu.uid;
           sessionStorage.configs = JSON.stringify(config);
           // if(this.accordion) {//手风琴
           //   let l = this.menus.length;
           //   for (let i = 0; i < l; i++) {
-          //     if(this.menus[i].id != menu.id) {
+          //     if(this.menus[i].uid != menu.uid) {
           //       this.menus[i].active = false;
-          //       menu.id.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+          //       menu.uid.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
           //     }
           //   }
           // }
@@ -164,7 +164,7 @@ export default {
         }
       },
       zIndex(menu) {
-        let l = menu.id.split('-').length;
+        let l = menu.uid.split('-').length;
         return 1000 - l*2;
       },
       menuOpen(val) {
