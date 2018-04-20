@@ -1,21 +1,24 @@
 <template>
   <div id="app">
     <h1>starpost-ui</h1>
-    <h3>Img 图片详情</h3>
+    <h3>Img 图片</h3>
     <sp-img :urlArr="urlArr" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
     <sp-img :urlArr="urlArr1" @get-urlArr="getUrlArr" @active-index="getActiveIndex"></sp-img>
     <sp-dialog :title="title" :visible.sync="visible">
       <sp-img-content :urlArr="spImgArr" :activeIndex="activeIndex" @active-index="getActiveIndex"></sp-img-content>
     </sp-dialog>
 
-    <h3>menu 左侧菜单</h3>
+    <h3>Menu 菜单(无限循环)</h3>
     <div class="sp-menu-content">
       <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
         <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
       </sp-menu-group>
     </div>
 
-    <h3>sp-amap</h3>
+    <h3>Transfer 穿梭框(拖动)</h3>
+    <sp-transfer :data="transferData" @clear="clear" :callbakData.sync="callbakData" :title="['列表1', '列表2']" />
+
+    <h3>Amap 地图(高德)</h3>
     <sp-amap :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
 
     <h3>Checkbox 全选/复选框</h3>
@@ -35,6 +38,11 @@ export default {
   name: "app",
   data() {
     return {
+      //穿梭框
+      transferData: [{id: 1, label: 'item1'},{id: 2, label: 'item2'},{id: 3, label: 'item3'},{id: 4, label: 'item4'},{id: 5, label: 'item5'}],
+      callbakData: [],
+      number: 0,
+      //地图
       markers: [
         {
           title: "【东莞仓】",
@@ -58,6 +66,7 @@ export default {
           phone: "13713261111"
         }
       ],
+      //菜单
       status: true,
       selectId: "1",
       pageConfig: [],
@@ -65,7 +74,7 @@ export default {
         {
           label: "一级 1",
           icon: "icon-wutu",
-          url: "javascript:;",
+          url: "javascript:;"
           // children: ["aaa", "bbb", "ccc"]
         },
         {
@@ -132,6 +141,7 @@ export default {
           ]
         }
       ],
+      //图片
       name: "12",
       visible: false,
       title: "",
@@ -183,6 +193,12 @@ export default {
   },
   created() {
     this.spMuneInit(this.menus); //菜单设置ID,刷新页面选中的菜单高亮
+    console.log(this.menus);
+  },
+  watch: {
+    callbakData(val) {
+      console.log('穿梭框数组：'+JSON.stringify(val))
+    }
   },
   methods: {
     getUrlArr(val) {
@@ -248,6 +264,10 @@ export default {
     getGeocoder(val) {
       console.log("获取经纬度： " + JSON.stringify(val));
     },
+    //穿梭框
+    clear() {
+      console.log('清空穿梭框')
+    }
   }
 };
 </script>
@@ -265,7 +285,7 @@ html {
 }
 #app {
   font-size: 14px;
-  width: 400px;
+  width: 60%;
   margin: 0 auto;
 }
 ul,
@@ -278,14 +298,26 @@ h3 {
   margin-top: 40px;
   margin-bottom: 20px;
 }
-.sp-menu-content {
-  width: 300px;
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin: 0 auto;
-}
 .sp-select-box {
   margin: 0 auto;
   padding: 20px;
+}
+input{
+  -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+    padding: 0 15px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 120px;
+    margin-bottom: 10px;
 }
 </style>
