@@ -1,14 +1,14 @@
 <template>
   <ul :class="{ 'sp-menu-small': !menuStatus }">
     <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.uid" :style="{'background-color': backgroundColor}">
-      <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.uid}]" @click="clickMenu(menu)" 
-        :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
+      <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': !menu.url}, {'is-active': selectId == menu.uid}]" @click="clickMenu(menu)" 
+        :style="{'padding-left': menuStatus ? pdleft + 'px' : '','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
         <i class="iconfont" v-if="menu.icon" :class="menu.icon"></i>
-        <span :class="{'is-hover': !menuStatus && isUpNav && !menu.children}">{{ menu.label }}</span>
+        <span :class="{'is-hover': !menuStatus && isUpNav && !menu.children.length}">{{ menu.label }}</span>
       </div>
       <sp-collapse-transition>
-        <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
+        <sp-menu v-show="menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
           :menus="menu.children" 
           :backgroundColor="backgroundColor" 
           :hoverBgColor="hoverBgColor" 
@@ -225,7 +225,7 @@ export default {
         background-color: #2e323e;
         color: #fff;
         position: relative;
-        z-index: 100;
+        z-index: 1000;
         &:before{
           content: '';
           position: absolute;

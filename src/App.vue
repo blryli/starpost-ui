@@ -105,8 +105,8 @@ export default {
         {
           label: "一级 1",
           icon: "icon-wutu",
-          url: "javascript:;"
-          // children: ["aaa", "bbb", "ccc"]
+          url: "javascript:;",
+          children: ["aaa", "bbb", "ccc"]
         },
         {
           label: "一级 2",
