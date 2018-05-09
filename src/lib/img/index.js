@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import Img from './img.vue';
 
 /* istanbul ignore next */

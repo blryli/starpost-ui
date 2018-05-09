@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import CheckboxGroup from '../checkbox/checkbox-group.vue';
 
 /* istanbul ignore next */

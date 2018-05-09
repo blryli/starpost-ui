@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import CheckBox from './checkbox.vue';
 
 /* istanbul ignore next */

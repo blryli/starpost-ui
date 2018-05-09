@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import Amap from './amap.vue';
 
 /* istanbul ignore next */

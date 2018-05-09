@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import CheckButton from '../checkbox/checkbox-button.vue';
 
 /* istanbul ignore next */

@@ -16,6 +16,10 @@ export default {
         return [];
       }
     },
+    zoom: {
+      type: Number,
+      default: 9
+    },
     width: String,
     height: String
   },
@@ -29,27 +33,27 @@ export default {
   },
   data() {
     return {
-      zoom: 9,
       center: [0, 0],
-      events: {
-        init: o => {
-          //创建地图获取城市
-          o.getCity(result => {
-            this.$emit("getCity", result);
-          });
-        },
-        moveend: () => {},
-        zoomchange: () => {},
-        click: e => {
-          //点击地图获取经纬度和具体地址
-          this.getGeocoder(e.lnglat);
-        }
-      },
+      events: {},
       plugin: []
     };
   },
   created() {
     var self = this;
+    this.events = {
+      init: o => {
+        //创建地图获取城市
+        o.getCity(result => {
+          this.$emit("getCity", result);
+        });
+      },
+      moveend: () => {},
+      zoomchange: () => {},
+      click: e => {
+        //点击地图获取经纬度和具体地址
+        this.getGeocoder(e.lnglat);
+      }
+    };
     //工具条
     this.plugin = [
       "ToolBar",
@@ -74,6 +78,7 @@ export default {
                 };
                 // console.log(result);
                 self.address = result.formattedAddress;
+                if(!self.markers.length) return;
                 self.$nextTick(function() {
                   //距离最近的仓库
                   let arr = [];
@@ -149,6 +154,7 @@ export default {
     var self = this;
     this.$nextTick(function() {
       //渲染完成添加地图点的点击事件
+      if(!this.markers.length) return;
       this.markers.forEach((d, i) => {
         self.$set(d, "events", {
           click: e => {

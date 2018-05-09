@@ -10,8 +10,8 @@
 
     <h3>Menu 菜单(无限循环)</h3>
     <div class="sp-menu-content">
-      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus="status" @status-change="getStatus">
-        <sp-menu :menus="menus" :menuStatus="status" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
+      <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus.sync="menuStatus">
+        <sp-menu :menus="menus" :menuStatus="menuStatus" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
       </sp-menu-group>
     </div>
 
@@ -19,9 +19,9 @@
     <sp-transfer :data="transferData" @clear="clear" :callbakData.sync="callbakData" :title="['列表1', '列表2']" />
 
     <h3>Amap 地图(高德)</h3>
-    <sp-amap :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
+    <sp-amap @get-map-form="getMapForm" :markers="markers" @get-geocoder="getGeocoder"></sp-amap>
 
-    <h3>Checkbox 全选/复选框</h3>
+    <h3>CheckBox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
     <div v-for="(item, index) in checkArr" :key="index">
       <sp-checkbox v-model.lazy="item.checked" :checkedArr="checkArr" :checkAlled="checkAlled" @change="getCheckAlled">选项{{index}}</sp-checkbox>
@@ -29,6 +29,9 @@
 
     <h3>Checkbox 单选/复选按钮</h3>
     <sp-checkbox-button :checkList="checkList" :checkValues="checkValues" @callback="getSaskStatus">状态</sp-checkbox-button>
+
+    <h3>DataPicker 日期组件</h3>
+    <sp-date-picker :data="datePicker" />
 
   </div>
 </template>
@@ -38,8 +41,36 @@ export default {
   name: "app",
   data() {
     return {
+      datePicker: [
+        {
+          data: "2018-01-09",
+          money: 28,
+          par: 35,
+          count: 2200,
+          more: true,
+          hot: true,
+          unit: "kg",
+          time: "20-25"
+        },
+        {
+          data: "2018-01-10",
+          money: 20,
+          par: 22,
+          count: 1900,
+          more: false,
+          hot: false,
+          unit: "cbm",
+          time: "20-25"
+        }
+      ],
       //穿梭框
-      transferData: [{id: 1, label: 'item1'},{id: 2, label: 'item2'},{id: 3, label: 'item3'},{id: 4, label: 'item4'},{id: 5, label: 'item5'}],
+      transferData: [
+        { id: 1, label: "item1" },
+        { id: 2, label: "item2" },
+        { id: 3, label: "item3" },
+        { id: 4, label: "item4" },
+        { id: 5, label: "item5" }
+      ],
       callbakData: [],
       number: 0,
       //地图
@@ -67,7 +98,7 @@ export default {
         }
       ],
       //菜单
-      status: true,
+      menuStatus: true,
       selectId: "1",
       pageConfig: [],
       menus: [
@@ -197,7 +228,7 @@ export default {
   },
   watch: {
     callbakData(val) {
-      console.log('穿梭框数组：'+JSON.stringify(val))
+      console.log("穿梭框数组：" + JSON.stringify(val));
     }
   },
   methods: {
@@ -230,16 +261,6 @@ export default {
       this.checkValues = val;
       console.log("单选/复选按钮 选中的值: " + val);
     },
-    //菜单组件 是否展开
-    getStatus(val) {
-      this.status = val;
-      console.log("菜单组件 是否展开: " + val);
-    },
-    //菜单组件 是否展开
-    getStatus(val) {
-      this.status = val;
-      console.log("菜单组件 是否展开: " + val);
-    },
     menuOpen(val) {
       console.log("菜单组件 打开的ID: " + val);
     },
@@ -266,7 +287,7 @@ export default {
     },
     //穿梭框
     clear() {
-      console.log('清空穿梭框')
+      console.log("清空穿梭框");
     }
   }
 };
@@ -302,22 +323,22 @@ h3 {
   margin: 0 auto;
   padding: 20px;
 }
-input{
+input {
   -webkit-appearance: none;
-    background-color: #fff;
-    background-image: none;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
-    box-sizing: border-box;
-    color: #606266;
-    display: inline-block;
-    font-size: inherit;
-    height: 30px;
-    line-height: 30px;
-    outline: none;
-    padding: 0 15px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    width: 120px;
-    margin-bottom: 10px;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 30px;
+  line-height: 30px;
+  outline: none;
+  padding: 0 15px;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 120px;
+  margin-bottom: 10px;
 }
 </style>

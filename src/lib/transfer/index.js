@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import Transfer from './transfer.vue';
 
 /* istanbul ignore next */

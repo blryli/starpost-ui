@@ -2,18 +2,10 @@
   <ul :class="{ 'sp-menu-small': !menuStatus }">
     <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.uid" :style="{'background-color': backgroundColor}">
       <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': menu.children && !menu.url}, {'is-active': selectId == menu.uid}]" @click="clickMenu(menu)" 
-      :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
+        :style="{'padding-left': pdleft + 'px','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
-        <i class="iconfont" v-if="menu.icon && menuStatus" :class="[menu.icon]"></i>
-        <router-link v-if="router && menu.url" :to="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor}">
-          <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
-        </router-link>
-        <a v-if="!router && menu.url" :href="menu.url" :style="{'color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor}">
-          <i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>
-          <span :class="{'is-hover': !menuStatus && !menu.children && isUpNav}">{{ menu.label }}</span>
-        </a>
-        <span v-if="!menu.url"><i class="iconfont" v-if="menu.icon && !menuStatus" :class="[menu.icon]"></i>{{ menu.label }}</span>
+        <i class="iconfont" v-if="menu.icon" :class="menu.icon"></i>
+        <span :class="{'is-hover': !menuStatus && isUpNav && !menu.children}">{{ menu.label }}</span>
       </div>
       <sp-collapse-transition>
         <sp-menu v-show="menu.children && menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
@@ -116,16 +108,17 @@ export default {
     methods:{
       //menu收缩展开
       clickMenu(menu) {
-        if(!menu.url){
-          if( this.menuStatus) {
+        let config = menu.configs ? menu.configs : [],
+          l = this.menus.length;
+        if (!menu.url){
+          if ( this.menuStatus) {
             menu.active = !menu.active;
             menu.active ? this.$emit('open', menu.uid) : this.$emit('close', menu.uid);
-            if(this.accordion) {//手风琴
-              let l = this.menus.length;
+            if (this.accordion) {//手风琴
               for (let i = 0; i < l; i++) {
-                if(menu.active) {
-                  if(this.menus[i].uid != menu.uid) {
-                    if(this.menus[i].active) {
+                if (menu.active) {
+                  if (this.menus[i].uid != menu.uid) {
+                    if (this.menus[i].active) {
                       this.menus[i].active = false;
                       this.$emit('close', this.menus[i].uid);
                     }
@@ -135,12 +128,12 @@ export default {
               }
             }
           }
-        }else {
-          let config = menu.configs ? menu.configs : [];
+        } else {
           this.$emit('select-id', menu.uid);
           this.pagePermissions && this.$emit('page-config', config);
           sessionStorage.selectId = menu.uid;
           sessionStorage.configs = JSON.stringify(config);
+          this.router ? this.$router.push(menu.url) : window.location.href = menu.url;
           // if(this.accordion) {//手风琴
           //   let l = this.menus.length;
           //   for (let i = 0; i < l; i++) {
@@ -152,7 +145,7 @@ export default {
           // }
         }
       },
-      //开启router下 刷新页面保持菜单激活状态
+      //手风琴 关闭菜单
       navClose(array) {
         for (let i = 0; i < array.length; i++) {
           let arr = array[i].children;
@@ -205,42 +198,38 @@ export default {
     transition: border-color .3s,background-color .3s,color .3s;
     box-sizing: border-box;
     white-space: nowrap;
-    a{
-      width: 100%;
-    }
-    a, span{
+    span{
       text-decoration: none;
       display: inline-block;
     }
-    a, span, i{
+    span, i{
       position: relative;
       z-index: 5;
+      opacity: .7;
+      transition: opacity .1s ease;
     }
     .bg-hove{
       opacity: 0;
-    }
-    a, span, i{
-      opacity: .7;
-      transition: opacity .1s ease;
     }
     &:hover{
       .bg-hove{
         opacity: 1;
       }
-      a, span, i{
+      span, i{
         opacity: 1;
       }
       .is-hover{
-        left: 10px;
+        left: 6px;
         width: auto;
         padding: 0 10px;
-        margin: 0 4px;
         background-color: #2e323e;
+        color: #fff;
         position: relative;
+        z-index: 100;
         &:before{
           content: '';
           position: absolute;
-          left: -4px;
+          left: -2px;
           top: 50%;
           transform: translate(-50%, -50%);
           width: 0;
@@ -252,7 +241,7 @@ export default {
       }
     }
     &.is-active{
-      a, span, i{
+      span, i{
         opacity: 1;
       }
     }
@@ -303,6 +292,8 @@ export default {
     >.sp-menu-small{
       display: none;
       transition: all .3s;
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,.2);
+      margin-left: 1px;
     }
     &:hover{
       overflow: visible;
@@ -336,5 +327,4 @@ export default {
     }
   }
 }
-
 </style>

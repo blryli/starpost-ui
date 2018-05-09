@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import Dialog from './dialog.vue';
 
 /* istanbul ignore next */
