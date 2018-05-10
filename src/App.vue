@@ -19,7 +19,7 @@
     <sp-transfer :data="transferData" @clear="clear" :callbakData.sync="callbakData" :title="['列表1', '列表2']" />
 
     <h3>Amap 地图(高德)</h3>
-    <sp-amap @get-map-form="getMapForm" :markers="markers" @get-geocoder="getGeocoder"></sp-amap>
+    <sp-amap :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
 
     <h3>CheckBox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
