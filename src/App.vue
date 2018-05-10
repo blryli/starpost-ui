@@ -11,7 +11,7 @@
     <h3>Menu 菜单(无限循环)</h3>
     <div class="sp-menu-content">
       <sp-menu-group :menuWidth="['40px', '200px']" :menuStatus.sync="menuStatus">
-        <sp-menu :menus="menus" :menuStatus="menuStatus" :select-id="selectId" :pagePermissions="true" @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
+        <sp-menu :menus="menus" :menuStatus="menuStatus" :select-id="selectId" pagePermissions @select-id="getSelectId" @page-config="getPageConfig" @open="menuOpen" @close="menuClose" />
       </sp-menu-group>
     </div>
 
@@ -102,6 +102,12 @@ export default {
       selectId: "1",
       pageConfig: [],
       menus: [
+        {
+          label: "一级 1",
+          icon: "icon-wutu",
+          url: "javascript:;",
+          children: ["aaa", "bbb", "ccc"]
+        },
         {
           label: "一级 1",
           icon: "icon-wutu",
@@ -223,8 +229,6 @@ export default {
     };
   },
   created() {
-    this.spMuneInit(this.menus); //菜单设置ID,刷新页面选中的菜单高亮
-    console.log(this.menus);
   },
   watch: {
     callbakData(val) {

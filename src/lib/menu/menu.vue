@@ -5,7 +5,7 @@
         :style="{'padding-left': menuStatus ? pdleft + 'px' : '','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
         <i class="iconfont" v-if="menu.icon" :class="menu.icon"></i>
-        <span :class="{'is-hover': !menuStatus && isUpNav && !menu.children.length}">{{ menu.label }}</span>
+        <span :class="{'is-hover': isHover(menu)}">{{ menu.label }}</span>
       </div>
       <sp-collapse-transition>
         <sp-menu v-show="menu.active" @select-id="getSelectId" @page-config="getPageConfig"  @open="menuOpen" @close="menuClose" 
@@ -84,7 +84,7 @@ export default {
       },
       selectId: {//选中的ID
         type: String,
-        default: ''
+        default: '1'
       },
       isUpNav: {//是否是一级按钮
         type: Boolean,
@@ -99,34 +99,33 @@ export default {
       return {
       }
     },
+    created() {
+      if(this.isUpNav) {
+        !sessionStorage.selectId && (sessionStorage.selectId = selectId);
+        this.muneSetId(this.menus);
+        this.setHighlight(this.menus);
+      }
+    },
+    watch: {
+      menuStatus(val) {
+        this.isUpNav && val && this.setHighlight(this.menus);
+      }
+    },
     computed: {
       //层级padding-left
       pdleft() {
         return this.paddingLeft + 20;
-      },
+      }
     },
     methods:{
       //menu收缩展开
       clickMenu(menu) {
-        let config = menu.configs ? menu.configs : [],
-          l = this.menus.length;
+        let config = menu.configs ? menu.configs : [];
         if (!menu.url){
           if ( this.menuStatus) {
             menu.active = !menu.active;
             menu.active ? this.$emit('open', menu.uid) : this.$emit('close', menu.uid);
-            if (this.accordion) {//手风琴
-              for (let i = 0; i < l; i++) {
-                if (menu.active) {
-                  if (this.menus[i].uid != menu.uid) {
-                    if (this.menus[i].active) {
-                      this.menus[i].active = false;
-                      this.$emit('close', this.menus[i].uid);
-                    }
-                    menu.uid.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
-                  }
-                }
-              }
-            }
+            this.handlerAccordion(menu);
           }
         } else {
           this.$emit('select-id', menu.uid);
@@ -143,6 +142,52 @@ export default {
           //     }
           //   }
           // }
+        }
+      },
+      //初始化设置ID
+      muneSetId(menus, id) {
+        for (let i = 0; i < menus.length; i++) {
+          id ? this.$set(menus[i], "uid", id + "-" + (i + 1)) : this.$set(menus[i], "uid", '' + parseInt(i + 1));
+          if (menus[i].url && menus[i].children) {
+            this.$set(menus[i], "checked", false);
+            this.$set(menus[i], "configs", menus[i].children);
+            menus[i].children = [];
+          }
+          menus[i].children && this.muneSetId(menus[i].children, menus[i].uid);
+        }
+      },
+      //高亮展开
+      setHighlight(menus) {
+        if (sessionStorage.selectId) {
+          this.$emit('select-id', sessionStorage.selectId);
+          let activeArr = sessionStorage.selectId.split('-'),
+            this_menu;
+          for (let i = 0; i < activeArr.length - 1; i++) {
+            if (this_menu) {
+              this_menu.children[activeArr[i] - 1].active = true;
+              this_menu = this_menu.children[activeArr[i] - 1];
+            } else {
+              menus[activeArr[i] - 1].active = true;
+              this_menu = menus[activeArr[i] - 1];
+            }
+          }
+        }
+      },
+      //手风琴
+      handlerAccordion(menu) {
+        let l = this.menus.length;
+        if (this.accordion) {//手风琴
+          for (let i = 0; i < l; i++) {
+            if (menu.active) {
+              if (this.menus[i].uid != menu.uid) {
+                if (this.menus[i].active) {
+                  this.menus[i].active = false;
+                  this.$emit('close', this.menus[i].uid);
+                }
+                menu.uid.split('-').length == 1 && this.menus[i].children && this.navClose(this.menus[i].children);
+              }
+            }
+          }
         }
       },
       //手风琴 关闭菜单
@@ -174,6 +219,13 @@ export default {
       getPageConfig(val) {
         this.pagePermissions && this.$emit('page-config', val);
       },
+      isHover(menu) {
+        if(!this.menuStatus && this.isUpNav) {
+          if(!menu.children || menu.children && !menu.children.length) return true;
+          return false;
+        }
+        return false;
+      }
     }
 }
 </script>
