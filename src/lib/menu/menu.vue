@@ -101,7 +101,7 @@ export default {
     },
     created() {
       if(this.isUpNav) {
-        !sessionStorage.selectId && (sessionStorage.selectId = selectId);
+        !sessionStorage.selectId && (sessionStorage.selectId = this.selectId);
         this.muneSetId(this.menus);
         this.setHighlight(this.menus);
       }
