@@ -31,6 +31,7 @@ export default {
 <style lang="scss" scoped>
 	.sp-menu-group{
     position: relative;
+    z-index: 5;
 		overflow: visible;
 		transition: width .3s;
     &.crrut{

@@ -23,7 +23,7 @@
           :isUpNav="false" 
           :paddingLeft="pdleft"
           :pagePermissions="pagePermissions"
-        :style="{'width': width, 'z-index': zIndex(menu)}"/>
+        :style="{'width': width}"/>
       </sp-collapse-transition>
     </li>
   </ul>
@@ -125,6 +125,7 @@ export default {
           if ( this.menuStatus) {
             menu.active = !menu.active;
             menu.active ? this.$emit('open', menu.uid) : this.$emit('close', menu.uid);
+
             this.handlerAccordion(menu);
           }
         } else {
@@ -147,13 +148,12 @@ export default {
       //初始化设置ID
       muneSetId(menus, id) {
         for (let i = 0; i < menus.length; i++) {
-          id ? this.$set(menus[i], "uid", id + "-" + (i + 1)) : this.$set(menus[i], "uid", '' + parseInt(i + 1));
-          if (menus[i].url && menus[i].children) {
-            this.$set(menus[i], "checked", false);
+          if (this.pagePermissions && menus[i].url && menus[i].children) {
             this.$set(menus[i], "configs", menus[i].children);
             menus[i].children = [];
           }
-          menus[i].children && this.muneSetId(menus[i].children, menus[i].uid);
+          id ? this.$set(menus[i], "uid", id + "-" + (i + 1)) : this.$set(menus[i], "uid", '' + parseInt(i + 1));
+          menus[i].children && menus[i].children.length && this.muneSetId(menus[i].children, menus[i].uid);
         }
       },
       //高亮展开
@@ -193,17 +193,12 @@ export default {
       //手风琴 关闭菜单
       navClose(array) {
         for (let i = 0; i < array.length; i++) {
-          let arr = array[i].children;
-          if(this.accordion) {}
-          if(array[i].active == true) {
-            array[i].active = false 
+          if(array[i].active) {
+            array[i].active = false;
+            this.$emit('close', array[i].uid);
           }
-          arr && this.navClose(arr);
+          array[i].children && this.navClose(array[i].children);
         }
-      },
-      zIndex(menu) {
-        let l = menu.uid.split('-').length;
-        return 1000 - l*2;
       },
       menuOpen(val) {
         this.$emit('open', val)
@@ -232,36 +227,31 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../static/icon-font/iconfont.css';
-.bg-hove{
-  position: absolute;
-  height: 100%;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
 .sp-menu{
   position: relative;
   .sp-title{
     font-size: 14px;
     padding: 0 20px;
-    z-index: 0;
     cursor: pointer;
     position: relative;
     transition: border-color .3s,background-color .3s,color .3s;
     box-sizing: border-box;
     white-space: nowrap;
+    .bg-hove{
+      position: absolute;
+      height: 100%;
+      left: 0;
+      right: 0;
+      opacity: 0;
+    }
     span{
       text-decoration: none;
       display: inline-block;
     }
     span, i{
       position: relative;
-      z-index: 5;
       opacity: .7;
       transition: opacity .1s ease;
-    }
-    .bg-hove{
-      opacity: 0;
     }
     &:hover{
       .bg-hove{
@@ -277,7 +267,6 @@ export default {
         background-color: #2e323e;
         color: #fff;
         position: relative;
-        z-index: 1000;
         &:before{
           content: '';
           position: absolute;
@@ -308,7 +297,6 @@ export default {
       border-left: 1px solid;
       border-bottom: 1px solid;
       position: absolute;
-      z-index: 5;
       top: 38%;
       right: 15px;
       opacity: .7;
