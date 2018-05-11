@@ -84,7 +84,7 @@ export default {
     },
     number: {
       type: Number,
-      default: 0
+      default: 5
     },
     stripe: {
       type: Boolean,

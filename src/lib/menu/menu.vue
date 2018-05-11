@@ -1,6 +1,6 @@
 <template>
-  <ul :class="{ 'sp-menu-small': !menuStatus }">
-    <li class="sp-menu" v-if="menus" v-for="menu in menus" :key="menu.uid" :style="{'background-color': backgroundColor}">
+  <ul :class="{ 'sp-menu': isUpNav, 'sp-menu-small': !menuStatus }">
+    <li class="sp-menu-item" v-if="menus" v-for="menu in menus" :key="menu.uid" :style="{'background-color': backgroundColor}">
       <div class="sp-title" :class="[{active: menu.active, 'sp-arrow': !menu.url}, {'is-active': selectId == menu.uid}]" @click="clickMenu(menu)" 
         :style="{'padding-left': menuStatus ? pdleft + 'px' : '','color': activeMenuColor[0] && selectId == menu.uid ? activeMenuColor[1] : menuColor, 'backgroundColor': selectId == menu.uid ? hoverBgColor : backgroundColor, 'height': height, 'line-height':height}">
         <div class="bg-hove" :style="{'background-color': hoverBgColor}"></div>
@@ -227,7 +227,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../static/icon-font/iconfont.css';
-.sp-menu{
+.sp-menu-item{
   position: relative;
   .sp-title{
     font-size: 14px;
@@ -327,7 +327,7 @@ export default {
 }
 //菜单收缩基本样式
 .sp-menu-small{
-  >.sp-menu{
+  >.sp-menu-item{
     overflow: hidden;
     >.sp-menu-small{
       display: none;
@@ -349,10 +349,10 @@ export default {
   }
 }
 //菜单收缩  一级菜单隐藏元素
-.sp-menu-group >.sp-menu-small{
-  >.sp-menu{
+.sp-menu.sp-menu-small{
+  >.sp-menu-item{
     >.sp-title{
-      padding: 0 12px !important;
+      padding: 0 12px;
     }
     >.sp-arrow:after, >a, >span{
       display: none;

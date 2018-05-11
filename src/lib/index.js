@@ -11,6 +11,7 @@ import CheckButton from './checkbox-button/index.js';
 import CheckboxGroup from './checkbox-group/index.js';
 import CollapseTransition from './collapse-transition/index.js';
 import DatePicker from './date-picker/index.js';
+import HoverButton from './hover-button/index.js';
 
 const components = [
   Img,
@@ -24,7 +25,8 @@ const components = [
   CheckBox,
   CheckButton,
   CheckboxGroup,
-  CollapseTransition
+  CollapseTransition,
+  HoverButton
 ];
 
 const starpost = function (Vue, opts = {}) {

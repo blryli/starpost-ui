@@ -1,7 +1,9 @@
 <template>
-  <div class="sp-menu-group" :class="{crrut: menuStatus == true}"  :style="{width: menuStatus == true ? menuWidth[1] : menuWidth[0]}">
+  <div class="sp-menu-group">
     <i class="sp-menu-icon" @click="change(menuStatus)"></i>
-    <slot></slot>
+    <div class="sp-menu-container" :class="{crrut: menuStatus == true}"  :style="{width: menuStatus == true ? menuWidth[1] : menuWidth[0]}">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -29,7 +31,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.sp-menu-group{
+.sp-menu-group{
+  position: relative;
+}
+	.sp-menu-container{
     position: relative;
     z-index: 5;
 		overflow: visible;
@@ -40,9 +45,8 @@ export default {
 	}
   .sp-menu-icon{
     position: relative;
-    width: 24px;
     padding: 6px;
-    display: block;
+    display: inline-block;
     cursor: pointer;
     margin-bottom: 6px;
     color: #333;

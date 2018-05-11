@@ -15,11 +15,15 @@
       </sp-menu-group>
     </div>
 
+    <h3>Hover Button 悬浮菜单</h3>
+    <sp-hover-button></sp-hover-button>
+
     <h3>Transfer 穿梭框(拖动)</h3>
     <sp-transfer :data="transferData" @clear="clear" :callbakData.sync="callbakData" :title="['列表1', '列表2']" />
 
     <h3>Amap 地图(高德)</h3>
     <sp-amap :markers="markers" @get-map-form="getMapForm" @get-geocoder="getGeocoder"></sp-amap>
+
 
     <h3>CheckBox 全选/复选框</h3>
     <sp-checkbox :checkboxAll="true" :checkedArr="checkArr" v-model.lazy="checkAlled" @change="getCheckArr">全选&nbsp;&nbsp;</sp-checkbox>
@@ -72,7 +76,6 @@ export default {
         { id: 5, label: "item5" }
       ],
       callbakData: [],
-      number: 0,
       //地图
       markers: [
         {
@@ -305,7 +308,7 @@ html {
 #app {
   font-size: 14px;
   width: 60%;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 ul,
 li {
